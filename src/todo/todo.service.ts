@@ -7,7 +7,7 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 
-import { MongoClient, ObjectId, ServerApiVersion } from 'mongodb';
+import { Collection, MongoClient, ObjectId, ServerApiVersion } from 'mongodb';
 import { CreateTodoDTO } from './dto/create-todo.dto';
 
 // Creates a Todo interface to show exactly the attribute of our Todo
@@ -86,20 +86,23 @@ export class TodoService implements OnModuleInit, OnModuleDestroy {
   }
 
   // Deletes a todo by ID and add a new one (Update process)
-  async editTodo(postID: number, createTodoDTO: CreateTodoDTO): Promise<Todo> {
+  async editTodo(todoID: string, createTodoDTO: CreateTodoDTO): Promise<Todo> {
     const db = this.client.db(this.dbName);
     const collection = db.collection<any>(this.collectionName);
-
+    /*
     await this.deleteTodo(postID);
     this.todos.push(createTodoDTO);
-
-    /*
-    await collection.deleteOne(postID);
-    await collection.updateOne(createTodoDTO);
 */
+
+    //await collection.deleteOne(postID);
+    await collection.updateOne(
+      { _id: new ObjectId(todoID) },
+      { $set: createTodoDTO },
+    );
+
     // return last added item
-    // return collection.insertOne(-1);
-    return this.todos.at(-1)!;
+    return this.getTodo(todoID);
+    //return this.todos.at(-1)!;
   }
 
   // Deletes a todo from the array

@@ -9,7 +9,6 @@ import {
   Param,
   Post,
   Put,
-  Query,
   Res,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
@@ -47,10 +46,10 @@ export class TodoController {
   }
 
   // Edit a particular todo using ID
-  @Put('/')
+  @Put('/:todoID')
   async editTodo(
     @Res() res: any,
-    @Query('todoID') todoID: number,
+    @Param('todoID') todoID: string,
     @Body() createTodoDTO: CreateTodoDTO,
   ) {
     const editedTodo = await this.todoService.editTodo(todoID, createTodoDTO);

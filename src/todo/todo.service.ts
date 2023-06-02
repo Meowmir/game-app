@@ -87,17 +87,29 @@ export class TodoService implements OnModuleInit, OnModuleDestroy {
 
   // Deletes a todo by ID and add a new one (Update process)
   async editTodo(postID: number, createTodoDTO: CreateTodoDTO): Promise<Todo> {
+    const db = this.client.db(this.dbName);
+    const collection = db.collection<any>(this.collectionName);
+
     await this.deleteTodo(postID);
     this.todos.push(createTodoDTO);
 
+    /*
+    await collection.deleteOne(postID);
+    await collection.updateOne(createTodoDTO);
+*/
     // return last added item
-    // @ts-ignore
-    return this.todos.at(-1);
+    // return collection.insertOne(-1);
+    return this.todos.at(-1)!;
   }
 
   // Deletes a todo from the array
   async deleteTodo(todoID: number): Promise<any> {
-    const todoIndex = this.todos.findIndex((todo) => todo.id === todoID);
-    return this.todos.splice(todoIndex, 1);
+    const db = this.client.db(this.dbName);
+    const collection = db.collection<any>(this.collectionName);
+
+    //const todoIndex = this.todos.findIndex((todo) => todo.id === todoID);
+
+    return collection.deleteOne({ _id: new ObjectId(todoID) });
+    //    return this.todos.splice(todoIndex, 1);
   }
 }

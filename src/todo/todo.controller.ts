@@ -64,10 +64,10 @@ export class TodoController {
   }
 
   // Delete a todo using ID
-  @Delete('/delete')
+  @Delete('/:todoID')
   async deleteTodo(
     @Res() res: any,
-    @Query('todoID') todoID: number,
+    @Param('todoID') todoID: number,
   ): Promise<string> {
     const deletedTodo = await this.todoService.deleteTodo(todoID);
     if (!deletedTodo) {

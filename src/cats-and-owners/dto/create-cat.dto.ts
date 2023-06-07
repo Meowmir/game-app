@@ -9,3 +9,5 @@ export interface CreateCatDto {
 
   owner: CreateOwnerDto;
 }
+
+export type updateCatDto = Partial<CreateCatDto>;

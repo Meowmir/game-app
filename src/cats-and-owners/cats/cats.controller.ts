@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Res,
 } from '@nestjs/common';
 import { CatsService } from './cats.service';
@@ -18,12 +19,13 @@ export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
   @Get()
-  findAll() {
-    return this.catsService.findAll();
+  findAll(@Query('name') name: string | undefined) {
+    console.log(`name is: ${name}`);
+    return this.catsService.findAll(name);
   }
 
   @Get('/:catID')
-  async getTodo(@Res() res: any, @Param('catID') catID: string) {
+  async getCat(@Res() res: any, @Param('catID') catID: string) {
     const cat = await this.catsService.getCat(catID);
     if (!cat) {
       throw new NotFoundException('Cat does not exist!');

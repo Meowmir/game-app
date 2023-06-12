@@ -7,6 +7,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Cat } from '../schemas/cat.schema';
 import { CreateCatDto, updateCatDto } from '../dto/create-cat.dto';
+import { Owner } from '../schemas/owner.schema';
 
 @Injectable()
 export class CatsService {
@@ -16,8 +17,10 @@ export class CatsService {
     return createdCat.save();
   }
 
-  async findAll(): Promise<Cat[]> {
-    return this.catModel.find().populate('owner').exec();
+  async findAll(name?: string): Promise<Cat[]> {
+    const filters = name ? { name: { $regex: name } } : {};
+
+    return this.catModel.find(filters).populate('owner').exec();
   }
 
   async getCat(catID: string): Promise<Cat> {

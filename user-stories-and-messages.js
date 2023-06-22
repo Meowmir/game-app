@@ -6,7 +6,13 @@ PLACE TILE
 GIVE UP (only avaliable if there is no winner)
 RESTART GAME (only avaliable if there is a winner)
 
-'As a [persona], I [want to], [so that].'
+
+REAL TIME CHAT? TO LET THE OTHER PLAYER KNOW WHEN YOU ARE BRB
+SHOULD USERS BE ABLE TO DECIDE SIZE OF BOARD?
+
+
+-------
+
 
 USER STORY 1:
 'As a new player, I want to invite a friend, so that we can play the game.'
@@ -34,6 +40,7 @@ server response: {
         [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
     ],
     "players": [{"name": "player_1"}, {"name": "player_2"}]
+    "turn": "<round>"
 }
 
 USER STORY 2:
@@ -45,7 +52,7 @@ client message: {
     "game_id": "<id>"}
 
 server response: {
-    "type": "GAME_STARTED",
+    "type": "GAME_STATE",
     "game_id": "<id>",
     "game_board":  [
         [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],

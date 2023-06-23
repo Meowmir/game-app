@@ -44,7 +44,7 @@ server response: {
 }
 
 USER STORY 2:
-'As a player, I want to start the game, so that I can place a tile.'
+'As a player, I want to enter username, so that the game can start.'
 
 MESSAGE EXAMPLE 2: Start the game (when player 2 has opened the link)
 client message: {
@@ -108,7 +108,7 @@ server response: {
 
 
 USER STORY 4:
-'As a player, I want to place a tile, so that I can win.'
+'As a player, I want the game to end when there are 4 tiles in a row, so that I can win.'
 
     MESSAGE EXAMPLE 4: Ending the game
 client message: {
@@ -168,3 +168,8 @@ server response: {
     "players": [{player_1}, {player_2}],
     "turn": "<round>"
 }
+
+
+
+USER STORY 6:
+'As a player, I want would like to sign in, so that I can save my highscores.'

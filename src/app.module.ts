@@ -5,6 +5,7 @@ import { CatsModule } from './cats-and-owners/cats.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { dbUri, dbName, dbUser, dbPass } from './secrets.init';
+import { GameModule } from './game/game.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { dbUri, dbName, dbUser, dbPass } from './secrets.init';
       pass: dbPass,
     }),
     CatsModule,
+    GameModule,
   ],
   controllers: [AppController],
   providers: [AppService],

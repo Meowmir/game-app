@@ -6,8 +6,9 @@ import {
   WsResponse,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-
 import { GameService } from './game.service';
+import { Game } from './schemas/game.schema';
+import { MessageDTO } from './DTO/messages.dto';
 
 @WebSocketGateway({
   cors: {
@@ -21,9 +22,10 @@ export class GameGateway {
   server: Server;
 
   @SubscribeMessage('game')
-  async onEvent(@MessageBody() data: number): Promise<WsResponse<string>> {
+  //CHANGE DATA: ANY TO DATA: SCHEMA OR OTHER TYPE DESCRIPTION
+  async onMessage(@MessageBody() message: any): Promise<WsResponse<Game>> {
     return this.gameService
-      .onEvent(data)
+      .onEvent(new MessageDTO(message))
       .then((response) => ({ event: 'game', data: response }));
   }
 }

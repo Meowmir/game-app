@@ -1,6 +1,6 @@
 import { CreatePlayerDTO } from './create-player.dto';
-import { CreateGameBoardDTO } from './create-game-board.dto';
 import {
+  IsJSON,
   IsNotEmpty,
   IsNumber,
   IsString,
@@ -20,8 +20,8 @@ export class CreateGameDTO extends DTOBase<CreateGameDTO> {
   @IsNumber()
   turn: number;
 
-  @ValidateNested()
-  gameBoard: CreateGameBoardDTO;
+  @IsJSON()
+  gameBoard: string;
 
   @ValidateNested()
   players: CreatePlayerDTO[];

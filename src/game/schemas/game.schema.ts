@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { GameBoard } from './game-board.schema';
 import { Player } from './player-schema';
 
 export type GameDocument = HydratedDocument<Game>;
@@ -17,7 +16,7 @@ export class Game {
   turn: number;
 
   @Prop({ required: true })
-  gameBoard: GameBoard;
+  gameBoard: string;
 
   @Prop({ required: true })
   players: Player[];

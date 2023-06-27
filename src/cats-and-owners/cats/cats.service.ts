@@ -1,4 +1,4 @@
-import mongoose, { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import {
   BadRequestException,
   Injectable,
@@ -7,7 +7,6 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Cat } from '../schemas/cat.schema';
 import { CreateCatDto, updateCatDto } from '../dto/create-cat.dto';
-import { Owner } from '../schemas/owner.schema';
 
 @Injectable()
 export class CatsService {

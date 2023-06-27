@@ -17,7 +17,7 @@ export class DbService {
 
   // GET GAME
   async getGame(gameId: string): Promise<Game> {
-    const foundGame = await this.gameModel.findById(gameId);
+    const foundGame = await this.gameModel.findOne({gameId});
     if (!foundGame) {
       throw new BadRequestException(`Invalid ID ${gameId}`);
     }

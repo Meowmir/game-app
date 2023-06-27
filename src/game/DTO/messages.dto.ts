@@ -19,3 +19,12 @@ export class AddPlayerMessageDTO extends DTOBase<AddPlayerMessageDTO> {
   @ValidateNested()
   player: CreatePlayerDTO;
 }
+
+export class GetGameMessageDTO extends DTOBase<AddPlayerMessageDTO> {
+  @IsString()
+  @IsNotEmpty()
+  type: string;
+
+  @IsUUID()
+  gameId: string;
+}

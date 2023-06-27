@@ -3,10 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { DbService } from './db.service';
 import { Game } from './schemas/game.schema';
 import { CreateGameDTO } from './DTO/create-game.dto';
-import { CreateGameBoardDTO } from './DTO/create-game-board.dto';
-import { AddPlayerMessageDTO } from './DTO/messages.dto';
+import {AddPlayerMessageDTO, GetGameMessageDTO} from './DTO/messages.dto';
 import { generateBoard } from './game.utils';
-import { Model } from 'mongoose';
 
 @Injectable()
 export class GameService {
@@ -19,7 +17,7 @@ export class GameService {
       case 'NEW_GAME':
         return this.newGame();
       case 'GET_GAME':
-        return this.getGame('649ab79b0dd571b3b2c4904a');
+        return this.getGame(new GetGameMessageDTO(message));
       case 'ADD_PLAYER':
         return this.addPlayer(new AddPlayerMessageDTO(message));
       default:
@@ -31,15 +29,13 @@ export class GameService {
       state: 'NEW_GAME',
       gameId: uuidv4(),
       turn: 0,
-      gameBoard: new CreateGameBoardDTO({
-        gameBoard: generateBoard(16, 16),
-      }),
+      gameBoard: JSON.stringify(generateBoard(12, 12)),
       players: [],
     });
     return this.dbService.create(gameToStart);
   }
 
-  private async getGame(gameId: string): Promise<Game> {
+  private async getGame({gameId}: GetGameMessageDTO): Promise<Game> {
     const foundGame = await this.dbService.getGame(gameId);
     if (!foundGame) {
       throw new BadRequestException(`Invalid ID ${gameId}`);

@@ -6,7 +6,9 @@
       socket.on('connect', function() {
         console.log('Connected');
 
-        socket.emit('game', { type: "GET_GAME" });
+      //  socket.emit('game', { type: "NEW_GAME" });
+
+        socket.emit('game', { type: "GET_GAME", gameId: "a3d6115a-1252-4f20-875e-6d4ee6fcbc41" });
       });
       socket.on('game', function(data) {
         console.log('game', data);

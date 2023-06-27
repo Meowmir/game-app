@@ -1,8 +1,7 @@
-import { CreateTileDto } from './DTO/create-game-board.dto';
-
+type Tile = {color: string, player: string}
 export function generateBoard(
   rows: number,
   cols: number,
-): (CreateTileDto | null)[][] {
-  return Array(rows).map((_) => Array(cols).fill(null));
+): (Tile | null)[][] {
+  return Array(rows).fill(null).map((_) => Array(cols).fill(null));
 }

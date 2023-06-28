@@ -39,6 +39,7 @@ export class GameService {
   }
 
   private async getGame({ gameId }: GetGameMessageDTO): Promise<Game> {
+
     const foundGame = await this.dbService.getGame(gameId);
     if (!foundGame) {
       throw new BadRequestException(`Invalid ID ${gameId}`);

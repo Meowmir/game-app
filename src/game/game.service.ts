@@ -45,37 +45,35 @@ export class GameService {
   }
 
   private async addPlayer(message: AddPlayerMessageDTO): Promise<Game> {
-    // DESTRUCTURING
-    // const { gameId , player: playerToAdd } = message
     const theGame = await this.dbService.getGame(message.gameId);
+
+    const [{ sessionId }] = theGame.players;
+    const {
+      player: { sessionId: newSessionId },
+      gameId,
+    } = message;
+
     if (!theGame) {
       throw new BadRequestException(`Invalid ID ${message.gameId}`);
     }
 
-    const players = theGame.players;
+    if (theGame.players.length !== 0) {
+      if (newSessionId === sessionId) {
+        throw new BadRequestException(`Player already exist.`);
+      }
 
-    const takenId = players
-      .map((e) => {
-        return e.sessionId;
-      })
-      .toString();
-
-    const newId = message.player.sessionId;
-
-    if (newId === takenId) {
-      throw new BadRequestException(`Player already exist.`);
+      if (theGame.players.length > 1) {
+        throw new BadRequestException(
+          `Game ${gameId} already has enough players.`,
+        );
+      }
     }
+    const updatedPlayers = theGame.players.concat(message.player);
 
-    if (players.length > 1) {
-      throw new BadRequestException(
-        `Game ${message.gameId} already has enough players.`,
-      );
-    }
-
-    const updatedPlayers = players.concat(message.player);
-
-    return this.dbService.updateGame(message.gameId, {
+    return this.dbService.updateGame(gameId, {
       players: updatedPlayers,
     });
+
+    // return Promise.resolve<any>(null);
   }
 }

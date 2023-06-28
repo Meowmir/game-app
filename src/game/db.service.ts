@@ -4,6 +4,8 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { Game } from './schemas/game.schema';
 import { CreateGameDTO } from './DTO/create-game.dto';
+import { UpdateGameDTO } from './DTO/update-game-d-t.o';
+import { Player } from './schemas/player-schema';
 
 @Injectable()
 export class DbService {
@@ -17,10 +19,15 @@ export class DbService {
 
   // GET GAME
   async getGame(gameId: string): Promise<Game> {
-    const foundGame = await this.gameModel.findOne({gameId});
+    const foundGame = await this.gameModel.findOne({ gameId });
     if (!foundGame) {
       throw new BadRequestException(`Invalid ID ${gameId}`);
     }
     return foundGame;
+  }
+
+  async updateGame(gameId: string, update: UpdateGameDTO): Promise<Game> {
+    await this.gameModel.findOneAndUpdate({ gameId }, update);
+    return this.getGame(gameId);
   }
 }

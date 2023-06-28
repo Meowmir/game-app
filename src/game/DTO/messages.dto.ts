@@ -27,4 +27,7 @@ export class GetGameMessageDTO extends DTOBase<AddPlayerMessageDTO> {
 
   @IsUUID()
   gameId: string;
+
+
+  players: []
 }

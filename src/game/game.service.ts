@@ -52,13 +52,20 @@ export class GameService {
       throw new BadRequestException(`Invalid ID ${message.gameId}`);
     }
 
-    // check if player2 has same sessionID as player1
-    const whatIs = theGame.players.filter((element, index) => {
-      return theGame.players.indexOf(element) === index;
-      console.log(whatIs);
-    });
-
     const players = theGame.players;
+
+    const takenId = players
+      .map((e) => {
+        return e.sessionId;
+      })
+      .toString();
+
+    const newId = message.player.sessionId;
+
+    if (newId === takenId) {
+      throw new BadRequestException(`Player already exist.`);
+    }
+
     if (players.length > 1) {
       throw new BadRequestException(
         `Game ${message.gameId} already has enough players.`,

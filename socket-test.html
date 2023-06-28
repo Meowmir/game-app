@@ -8,12 +8,19 @@
         socket.on('connect', function () {
             console.log('Connected');
 
-            //   socket.emit('game', {type: "NEW_GAME"});
+            const theGameID = "a12417b2-1ca1-45c7-84eb-b6bfe3257164"
 
-            //    socket.emit('game', {type: "GET_GAME", gameId: "864a08c8-1e11-4190-9b72-5de32f5c599c"});
+            // socket.emit('game', {type: "NEW_GAME"});
 
-          //  socket.emit('game', { type: "ADD_PLAYER", gameId: "864a08c8-1e11-4190-9b72-5de32f5c599c", player: {name: "Nogzsie", sessionId: "3"}
+            // socket.emit('game', {type: "GET_GAME", gameId: theGameID});
+
+            socket.emit('game', {
+                type: "ADD_PLAYER",
+                gameId: theGameID,
+                player: {name: "Pugsie", sessionId: "1"}
             });
+
+
         });
         socket.on('game', function (data) {
             console.log('game', data);

@@ -5,8 +5,6 @@ import { Game } from './schemas/game.schema';
 import { CreateGameDTO } from './DTO/create-game.dto';
 import { AddPlayerMessageDTO, GetGameMessageDTO } from './DTO/messages.dto';
 import { generateBoard } from './game.utils';
-import { Player } from './schemas/player-schema';
-import { CreatePlayerDTO } from './DTO/create-player.dto';
 
 @Injectable()
 export class GameService {
@@ -39,7 +37,6 @@ export class GameService {
   }
 
   private async getGame({ gameId }: GetGameMessageDTO): Promise<Game> {
-
     const foundGame = await this.dbService.getGame(gameId);
     if (!foundGame) {
       throw new BadRequestException(`Invalid ID ${gameId}`);
@@ -48,29 +45,35 @@ export class GameService {
   }
 
   private async addPlayer(message: AddPlayerMessageDTO): Promise<Game> {
-    // read game from DB
-
-    // DESTRUCTURING
-    // const { gameId , player: playerToAdd } = message
     const theGame = await this.dbService.getGame(message.gameId);
+
+    const [{ sessionId }] = theGame.players;
+    const {
+      player: { sessionId: newSessionId },
+      gameId,
+    } = message;
+
     if (!theGame) {
       throw new BadRequestException(`Invalid ID ${message.gameId}`);
     }
 
-    // check if player can be added
-    const players = theGame.players;
-    if (players.length > 1) {
-      throw new BadRequestException(
-        `Game ${message.gameId} already has enough players.`,
-      );
-    }
-    // add player to game
-    const updatedPlayers = players.concat(message.player);
+    if (theGame.players.length !== 0) {
+      if (newSessionId === sessionId) {
+        throw new BadRequestException(`Player already exist.`);
+      }
 
-    // save game
-    // return saved game
-    return this.dbService.updateGame(message.gameId, {
+      if (theGame.players.length > 1) {
+        throw new BadRequestException(
+          `Game ${gameId} already has enough players.`,
+        );
+      }
+    }
+    const updatedPlayers = theGame.players.concat(message.player);
+
+    return this.dbService.updateGame(gameId, {
       players: updatedPlayers,
     });
+
+    // return Promise.resolve<any>(null);
   }
 }

@@ -50,6 +50,7 @@ export class PlaceTileMessageDTO extends DTOBase<PlaceTileMessageDTO> {
   @IsNotEmpty()
   sessionId: string;
 
+  // Colors available: RED, BLUE, GREEN, YELLOW
   @IsString()
   @IsNotEmpty()
   color: string;

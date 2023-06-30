@@ -83,5 +83,12 @@ export class GameService {
     // return Promise.resolve<any>(null);
   }
 
-  private async placeTile() {}
+  private async placeTile(message: PlaceTileMessageDTO) {
+    const theGame = await this.dbService.getGame(message.gameId);
+    if (!theGame) {
+      throw new BadRequestException(`Invalid ID ${message.gameId}`);
+    }
+
+    return Promise.resolve<any>(null);
+  }
 }

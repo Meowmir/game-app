@@ -8,20 +8,21 @@ import {
   GetGameMessageDTO,
   PlaceTileMessageDTO,
 } from './DTO/messages.dto';
-import { generateBoard } from './game.utils';
+import { generateBoard, toReadGame } from './game.utils';
+import { ReadGameDTO, ReadPlayerDTO, ReadTileDTO } from './DTO/read-game.dto';
 
 @Injectable()
 export class GameService {
   constructor(private dbService: DbService) {}
 
-  onEvent(message: any): Promise<Game> {
+  onEvent(message: any): Promise<ReadGameDTO> {
     console.log('Received data', message);
 
     switch (message.type) {
       case 'NEW_GAME':
         return this.newGame();
       case 'GET_GAME':
-        return this.getGame(new GetGameMessageDTO(message));
+        return this.getGame(new GetGameMessageDTO(message).gameId);
       case 'ADD_PLAYER':
         return this.addPlayer(new AddPlayerMessageDTO(message));
       case 'PLACE_TILE':
@@ -31,7 +32,7 @@ export class GameService {
     }
   }
 
-  private newGame(): Promise<Game> {
+  private async newGame(): Promise<ReadGameDTO> {
     const gameToStart = new CreateGameDTO({
       state: 'NEW_GAME',
       gameId: uuidv4(),
@@ -39,18 +40,16 @@ export class GameService {
       gameBoard: JSON.stringify(generateBoard(12, 12)),
       players: [],
     });
-    return this.dbService.create(gameToStart);
+    await this.dbService.create(gameToStart);
+
+    return this.getGame(gameToStart.gameId);
   }
 
-  private async getGame({ gameId }: GetGameMessageDTO): Promise<Game> {
-    const foundGame = await this.dbService.getGame(gameId);
-    if (!foundGame) {
-      throw new BadRequestException(`Invalid ID ${gameId}`);
-    }
-    return foundGame;
+  private async getGame(gameId: string): Promise<ReadGameDTO> {
+    return this.dbService.getGame(gameId).then(toReadGame);
   }
 
-  private async addPlayer(message: AddPlayerMessageDTO): Promise<Game> {
+  private async addPlayer(message: AddPlayerMessageDTO): Promise<ReadGameDTO> {
     const theGame = await this.dbService.getGame(message.gameId);
 
     const [{ sessionId }] = theGame.players;
@@ -59,36 +58,28 @@ export class GameService {
       gameId,
     } = message;
 
-    if (!theGame) {
-      throw new BadRequestException(`Invalid ID ${message.gameId}`);
+    if (newSessionId === sessionId) {
+      throw new BadRequestException(`Player already exist.`);
     }
 
-    if (theGame.players.length !== 0) {
-      if (newSessionId === sessionId) {
-        throw new BadRequestException(`Player already exist.`);
-      }
-
-      if (theGame.players.length > 1) {
-        throw new BadRequestException(
-          `Game ${gameId} already has enough players.`,
-        );
-      }
+    if (theGame.players.length > 1) {
+      throw new BadRequestException(
+        `Game ${gameId} already has enough players.`,
+      );
     }
+
     const updatedPlayers = theGame.players.concat(message.player);
 
-    return this.dbService.updateGame(gameId, {
+    await this.dbService.updateGame(gameId, {
       players: updatedPlayers,
     });
 
-    // return Promise.resolve<any>(null);
+    return this.getGame(message.gameId);
   }
 
-  private async placeTile(message: PlaceTileMessageDTO) {
+  private async placeTile(message: PlaceTileMessageDTO): Promise<ReadGameDTO> {
     const theGame = await this.dbService.getGame(message.gameId);
-    if (!theGame) {
-      throw new BadRequestException(`Invalid ID ${message.gameId}`);
-    }
 
-    return Promise.resolve<any>(null);
+    return this.getGame(message.gameId);
   }
 }

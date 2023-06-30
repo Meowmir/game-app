@@ -3,7 +3,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { DbService } from './db.service';
 import { Game } from './schemas/game.schema';
 import { CreateGameDTO } from './DTO/create-game.dto';
-import { AddPlayerMessageDTO, GetGameMessageDTO } from './DTO/messages.dto';
+import {
+  AddPlayerMessageDTO,
+  GetGameMessageDTO,
+  PlaceTileMessageDTO,
+} from './DTO/messages.dto';
 import { generateBoard } from './game.utils';
 
 @Injectable()
@@ -20,6 +24,8 @@ export class GameService {
         return this.getGame(new GetGameMessageDTO(message));
       case 'ADD_PLAYER':
         return this.addPlayer(new AddPlayerMessageDTO(message));
+      case 'PLACE_TILE':
+        return this.placeTile(new PlaceTileMessageDTO(message));
       default:
         throw new BadRequestException('Invalid message type');
     }
@@ -76,4 +82,6 @@ export class GameService {
 
     // return Promise.resolve<any>(null);
   }
+
+  private async placeTile() {}
 }

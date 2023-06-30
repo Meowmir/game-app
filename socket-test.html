@@ -8,16 +8,16 @@
         socket.on('connect', function () {
             console.log('Connected');
 
-            const theGameID = "41cef558-bcca-4ecb-bc2b-62aa1153cd19"
+            const theGameID = ""
 
-            //  socket.emit('game', {type: "NEW_GAME"});
+            //   socket.emit('game', {type: "NEW_GAME"});
 
             // socket.emit('game', {type: "GET_GAME", gameId: theGameID});
 
             socket.emit('game', {
                 type: "ADD_PLAYER",
                 gameId: theGameID,
-                player: {name: "P2", sessionId: "2"}
+                player: {name: "Pugsie", sessionId: "1"}
             });
 
 

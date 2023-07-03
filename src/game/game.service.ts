@@ -79,11 +79,9 @@ export class GameService {
 
   private async placeTile(message: PlaceTileMessageDTO): Promise<ReadGameDTO> {
     const theGame = await this.dbService.getGame(message.gameId);
-    // fetch gameboard from db
     const { gameBoard } = theGame;
     const { row, column, color, gameId, sessionId } = message;
 
-    // check which player is placing tile
     if (
       theGame.turn !==
       theGame.players.findIndex((player) => player.sessionId === sessionId)
@@ -91,7 +89,6 @@ export class GameService {
       throw new BadRequestException('NOT YOUR TURN BITCH!');
     }
 
-    // convert to array with JSON.parse
     const theGameBoardToArray = JSON.parse(gameBoard);
 
     if (row < 0 || column < 0) {
@@ -100,25 +97,17 @@ export class GameService {
       );
     }
 
-    // check if empty tile
     if (theGameBoardToArray[row][column]) {
       throw new BadRequestException(
         `Tile on row ${row}, column ${column} is not empty.`,
       );
     }
 
-    // get the message row from the db board
-    // where is it placed
     theGameBoardToArray.at(row).splice(column, 1, { color, sessionId });
 
-    // add to array
-
-    // convert array to string with JSON.stringify
-    // JSON.stringify(theGameBoard)
     const updatedBoardGame = JSON.stringify(theGameBoardToArray);
     console.log(updatedBoardGame);
 
-    // save to db
     await this.dbService.updateGame(gameId, {
       gameBoard: updatedBoardGame,
       turn: theGame.turn === 0 ? 1 : 0,

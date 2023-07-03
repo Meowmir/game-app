@@ -28,13 +28,18 @@ export function toReadGame(theGame: Game): ReadGameDTO {
       row.map((tile: any) => {
         if (!tile) {
           return null;
-        } else {
-          return new ReadTileDTO({
-            color: tile.color,
-            playerName: playersById.get(tile.sessionId) || 'Unknown',
-          });
         }
+        return new ReadTileDTO({
+          color: tile.color,
+          playerName: playersById.get(tile.sessionId) || 'Unknown',
+        });
       }),
     ),
   });
 }
+
+/// NEW FUNC CALLED PICK WINNER
+// RECI GAME
+// OPTIONAL RETURN WINNING PLAYER OBJ
+//
+// NEW BRANCH, MAKE TESTS

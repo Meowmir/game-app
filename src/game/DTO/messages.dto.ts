@@ -56,10 +56,8 @@ export class PlaceTileMessageDTO extends DTOBase<PlaceTileMessageDTO> {
   color: string;
 
   @IsNumber()
-  @IsPositive()
   row: number;
 
   @IsNumber()
-  @IsPositive()
   column: number;
 }

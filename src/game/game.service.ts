@@ -52,7 +52,7 @@ export class GameService {
   private async addPlayer(message: AddPlayerMessageDTO): Promise<ReadGameDTO> {
     const theGame = await this.dbService.getGame(message.gameId);
 
-    const [{ sessionId }] = theGame.players;
+    const [{ sessionId = '' } = {}] = theGame.players;
     const {
       player: { sessionId: newSessionId },
       gameId,
@@ -79,6 +79,28 @@ export class GameService {
 
   private async placeTile(message: PlaceTileMessageDTO): Promise<ReadGameDTO> {
     const theGame = await this.dbService.getGame(message.gameId);
+    // fetch gameboard from db
+    const { gameBoard } = theGame;
+
+    const theMessageRow = message.row;
+    const theMessageColumn = message.column;
+
+    // convert to array with JSON.parse
+    const theGameBoard = JSON.parse(gameBoard);
+    console.log(theGameBoard);
+
+    // check which player is placing tile
+
+    // where is it placed
+    // check if empty tile
+
+    // what color is it
+
+    // add to array
+
+    // convert array to string with JSON.stringify
+
+    // save to db
 
     return this.getGame(message.gameId);
   }

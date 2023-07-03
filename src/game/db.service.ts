@@ -1,15 +1,10 @@
 import { Model } from 'mongoose';
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Game } from './schemas/game.schema';
 import { CreateGameDTO } from './DTO/create-game.dto';
 import { UpdateGameDTO } from './DTO/update-game-d-t.o';
-import { Player } from './schemas/player-schema';
 
 @Injectable()
 export class DbService {

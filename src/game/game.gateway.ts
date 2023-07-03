@@ -7,7 +7,6 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { GameService } from './game.service';
-import { Game } from './schemas/game.schema';
 import { MessageDTO } from './DTO/messages.dto';
 import { ReadGameDTO } from './DTO/read-game.dto';
 

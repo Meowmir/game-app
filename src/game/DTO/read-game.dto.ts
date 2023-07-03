@@ -1,4 +1,3 @@
-import { CreatePlayerDTO } from './create-player.dto';
 import {
   IsNotEmpty,
   IsNumber,
@@ -19,8 +18,8 @@ export class ReadGameDTO extends DTOBase<ReadGameDTO> {
   @IsNumber()
   turn: number;
 
-  @ValidateNested()
-  gameBoard: ReadTileDTO[][];
+  // @ValidateNested()
+  gameBoard: (ReadTileDTO | null)[][];
 
   @ValidateNested()
   players: ReadPlayerDTO[];

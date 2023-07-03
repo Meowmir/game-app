@@ -25,13 +25,16 @@ export function toReadGame(theGame: Game): ReadGameDTO {
         }),
     ),
     gameBoard: JSON.parse(theGame.gameBoard).map((row: any) =>
-      row.map(
-        (tile: any) =>
-          new ReadTileDTO({
+      row.map((tile: any) => {
+        if (!tile) {
+          return null;
+        } else {
+          return new ReadTileDTO({
             color: tile.color,
             playerName: playersById.get(tile.sessionId) || 'Unknown',
-          }),
-      ),
+          });
+        }
+      }),
     ),
   });
 }

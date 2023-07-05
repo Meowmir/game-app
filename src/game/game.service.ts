@@ -10,7 +10,8 @@ import {
 } from './DTO/messages.dto';
 import { generateBoard, toReadGame } from './game.utils';
 import { ReadGameDTO } from './DTO/read-game.dto';
-import { Game } from "./schemas/game.schema";
+import { Game } from './schemas/game.schema';
+import { Player } from './schemas/player-schema';
 
 const MAX_PLAYERS = 2;
 
@@ -114,32 +115,15 @@ export class GameService {
 
     const updatedBoardGame = JSON.stringify(theGameBoardToArray);
 
+    const winner: Player | undefined = this.checkWinner(theGameBoardToArray);
+
     await this.dbService.updateGame(gameId, {
+      winner,
+      state: winner ? 'GAME_OVER' : theGame.state,
       gameBoard: updatedBoardGame,
       turn: theGame.turn === 0 ? 1 : 0,
     });
 
     return this.getGame(message.gameId);
-  }
-
-  private async checkWinner({ gameId }: GetGameMessageDTO): Promise<Game> {
-    // get game from dd without message
-    const theGame = await this.dbService.getGame(gameId);
-
-    const { gameBoard } = theGame;
-    // convert board from string to array
-    const gameBoardToArray = JSON.parse(gameBoard);
-    console.log(gameBoardToArray)
-
-    // map over indexes of array
-    // gameBoardToArray
-
-    // check if one color is placed 4 in a row
-    // check horizontal
-    // check vertical
-    // check diagonal
-    // if true, return winner and prevent players from placing more tiles
-    // game over
-    return Promise.resolve<any>(null);
   }
 }

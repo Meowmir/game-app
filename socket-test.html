@@ -8,8 +8,9 @@
         socket.on('connect', function () {
             console.log('Connected');
 
-            const theGameID = "cd15065a-5b21-4547-984d-85f14cb58cfc"
-            const theSessionID = "2"
+    const theGameID = "cd15065a-5b21-4547-984d-85f14cb58cfc"
+    const theSessionID = "2"
+
 
           //   socket.emit('game', {type: "NEW_GAME"});
 
@@ -23,6 +24,7 @@
                 });
 
 */
+
             socket.emit('game', {
                 type: "PLACE_TILE",
                 gameId: theGameID,
@@ -31,10 +33,6 @@
                 row: 1,
                 column: 0
             })
-
-
-
-
 
 
         });

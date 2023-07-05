@@ -1,15 +1,14 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { DbService } from './db.service';
-import { Game } from './schemas/game.schema';
 import { CreateGameDTO } from './DTO/create-game.dto';
 import {
   AddPlayerMessageDTO,
-  GetGameMessageDTO,
-  PlaceTileMessageDTO,
-} from './DTO/messages.dto';
+  GetGameMessageDTO, MessageDTO,
+  PlaceTileMessageDTO
+} from "./DTO/messages.dto";
 import { generateBoard, toReadGame } from './game.utils';
-import { ReadGameDTO, ReadPlayerDTO, ReadTileDTO } from './DTO/read-game.dto';
+import { ReadGameDTO } from './DTO/read-game.dto';
 
 @Injectable()
 export class GameService {
@@ -20,7 +19,7 @@ export class GameService {
 
     switch (message.type) {
       case 'NEW_GAME':
-        return this.newGame();
+        return this.newGame(new MessageDTO(message));
       case 'GET_GAME':
         return this.getGame(new GetGameMessageDTO(message).gameId);
       case 'ADD_PLAYER':
@@ -32,9 +31,9 @@ export class GameService {
     }
   }
 
-  private async newGame(): Promise<ReadGameDTO> {
+  private async newGame(message: MessageDTO): Promise<ReadGameDTO> {
     const gameToStart = new CreateGameDTO({
-      state: 'NEW_GAME',
+      state: message.type,
       gameId: uuidv4(),
       turn: 0,
       gameBoard: JSON.stringify(generateBoard(12, 12)),

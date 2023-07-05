@@ -1,10 +1,7 @@
 import { DTOBase } from './base.dto';
 import {
-  isNotEmpty,
   IsNotEmpty,
-  isNotIn,
   IsNumber,
-  IsPositive,
   IsString,
   IsUUID,
   ValidateNested,

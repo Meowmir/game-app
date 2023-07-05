@@ -9,7 +9,7 @@ export class DTOBase<T> {
     if (errors.length) {
       throw new BadRequestException(
         `Failed to validate ${this.constructor.name} for properties:\n ${errors
-          .map((e) => `- ${e.property}`)
+          .map((e) => `- ${e.property}: ${Object.keys(e.constraints || {})}`)
           .join('\n')}`,
       );
     }

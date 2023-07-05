@@ -1,5 +1,11 @@
 import { DTOBase } from './base.dto';
-import { IsNotEmpty, IsString, IsUUID, ValidateNested } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsUUID,
+  ValidateNested,
+} from 'class-validator';
 import { CreatePlayerDTO } from './create-player.dto';
 
 export class MessageDTO extends DTOBase<MessageDTO> {
@@ -27,4 +33,28 @@ export class GetGameMessageDTO extends DTOBase<AddPlayerMessageDTO> {
 
   @IsUUID()
   gameId: string;
+}
+
+export class PlaceTileMessageDTO extends DTOBase<PlaceTileMessageDTO> {
+  @IsString()
+  @IsNotEmpty()
+  type: string;
+
+  @IsUUID()
+  gameId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  sessionId: string;
+
+  // Colors available: RED, BLUE, GREEN, YELLOW
+  @IsString()
+  @IsNotEmpty()
+  color: string;
+
+  @IsNumber()
+  row: number;
+
+  @IsNumber()
+  column: number;
 }

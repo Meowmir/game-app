@@ -8,7 +8,7 @@ import {
   MessageDTO,
   PlaceTileMessageDTO,
 } from './DTO/messages.dto';
-import { generateBoard, toReadGame } from './game.utils';
+import { generateBoard, pickWinner, toReadGame } from './game.utils';
 import { ReadGameDTO } from './DTO/read-game.dto';
 import { Game } from './schemas/game.schema';
 import { Player } from './schemas/player-schema';
@@ -115,7 +115,10 @@ export class GameService {
 
     const updatedBoardGame = JSON.stringify(theGameBoardToArray);
 
-    const winner: Player | undefined = this.checkWinner(theGameBoardToArray);
+    const winningId: string | undefined = pickWinner(theGameBoardToArray);
+    const winner = theGame.players.find(
+      (p) => winningId && p.sessionId === winningId,
+    );
 
     await this.dbService.updateGame(gameId, {
       winner,

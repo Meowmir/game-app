@@ -1,7 +1,7 @@
 import { Game } from './schemas/game.schema';
 import { ReadGameDTO, ReadPlayerDTO, ReadTileDTO } from './DTO/read-game.dto';
 
-type Tile = { color: string; player: string };
+export type Tile = { color: string; sessionId: string };
 
 export function generateBoard(rows: number, cols: number): (Tile | null)[][] {
   return Array(rows)
@@ -38,8 +38,11 @@ export function toReadGame(theGame: Game): ReadGameDTO {
   });
 }
 
+export function pickWinner(gameBoard: (Tile | null)[][]): string | null {
+  return null;
+}
+
 /// NEW FUNC CALLED PICK WINNER
-// RECI GAME
+// RECI GAMEBOARD
 // OPTIONAL RETURN WINNING PLAYER OBJ
 //
-// NEW BRANCH, MAKE TESTS

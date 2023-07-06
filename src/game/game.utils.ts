@@ -43,14 +43,15 @@ export function pickWinner(gameBoard: (Tile | null)[][]): string | undefined {
   //  now find any row containing 4 tiles in a row of the same color and sessionId
   const howManyInARow = 4;
 
+  // Check for horizontal winner.
   for (const row of gameBoard) {
-    for (let rowI = 0; rowI <= row.length - howManyInARow; rowI++) {
-      const currentTile = row[rowI];
+    for (let colI = 0; colI <= row.length - howManyInARow; colI++) {
+      const currentTile = row[colI];
 
       if (!currentTile) continue;
 
       const { color, sessionId } = currentTile;
-      const nextTiles = row.slice(rowI + 1, rowI + howManyInARow);
+      const nextTiles = row.slice(colI + 1, colI + howManyInARow);
       const isNextSame = nextTiles.every((next) => {
         return next?.color === color && next.sessionId === sessionId;
       });
@@ -61,6 +62,31 @@ export function pickWinner(gameBoard: (Tile | null)[][]): string | undefined {
     }
   }
 
+  // Check for vertical winner.
+  for (let rowI = 0; rowI <= gameBoard.length - howManyInARow; rowI++) {
+    const currentRow = gameBoard[rowI];
+    for (let colI = 0; colI < currentRow.length; colI++) {
+      const currentTile = currentRow[colI];
+
+      if (!currentTile) continue;
+
+      const { color, sessionId } = currentTile;
+      const nextTiles = gameBoard
+        .slice(rowI + 1, rowI + howManyInARow)
+        .map((row) => {
+          return row[colI];
+        });
+
+      // Checking if all tiles in the new array has the same color ans sessionId.
+      const isNextSame = nextTiles.every((next) => {
+        return next?.color === color && next.sessionId === sessionId;
+      });
+
+      if (!isNextSame) continue;
+
+      return sessionId;
+    }
+  }
   return undefined;
 }
 

@@ -25,11 +25,12 @@ describe('pickWinner', () => {
       const gameBoard = loadTestData('4-in-a-row');
       assert.strictEqual(pickWinner(gameBoard), '1');
     });
-    /*
+
     it('should have 4 tiles of the same color in a column', () => {
       const gameBoard = loadTestData('4-in-a-column');
       assert.strictEqual(pickWinner(gameBoard), 'A');
     });
+    /*
     it('should have 4 tiles of the same color diagonally', () => {
       const gameBoard = loadTestData('4-in-a-row-diagonally');
       assert.strictEqual(pickWinner(gameBoard), 'B');
@@ -37,8 +38,13 @@ describe('pickWinner', () => {
   });
 
   describe('No false positives', () => {
-    it('Does not declare a winner for too few tiles', () => {
+    it('Does not declare a winner for too few horizontal tiles', () => {
       const gameBoard = loadTestData('4-in-a-row-incomplete');
+      assert.strictEqual(pickWinner(gameBoard), undefined);
+    });
+
+    it('Does not declare a winner for too few vertical tiles', () => {
+      const gameBoard = loadTestData('4-in-a-col-incomplete');
       assert.strictEqual(pickWinner(gameBoard), undefined);
     });
   });

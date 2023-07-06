@@ -1,0 +1,6 @@
+[
+  [{ "color": "RED", "sessionId": "2" }, { "color": "RED", "sessionId": "1" }, { "color": "RED", "sessionId": "1" }, { "color": "RED", "sessionId": "1" }],
+  [null, { "color": "BLUE", "sessionId": "2" }, { "color": "BLUE", "sessionId": "2" }, { "color": "BLUE", "sessionId": "2" }],
+  [null, null, null, null],
+  [null, null, null, null]
+]

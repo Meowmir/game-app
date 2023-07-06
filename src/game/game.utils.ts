@@ -1,5 +1,6 @@
 import { Game } from './schemas/game.schema';
 import { ReadGameDTO, ReadPlayerDTO, ReadTileDTO } from './DTO/read-game.dto';
+import { Player } from './schemas/player-schema';
 
 export type Tile = { color: string; sessionId: string };
 
@@ -38,8 +39,29 @@ export function toReadGame(theGame: Game): ReadGameDTO {
   });
 }
 
-export function pickWinner(gameBoard: (Tile | null)[][]): string | null {
-  return null;
+export function pickWinner(gameBoard: (Tile | null)[][]): string | undefined {
+  //  now find any row containing 4 tiles in a row of the same color and sessionId
+  const howManyInARow = 4;
+
+  for (const row of gameBoard) {
+    for (let rowI = 0; rowI <= row.length - howManyInARow; rowI++) {
+      const currentTile = row[rowI];
+
+      if (!currentTile) continue;
+
+      const { color, sessionId } = currentTile;
+      const nextTiles = row.slice(rowI + 1, rowI + howManyInARow);
+      const isNextSame = nextTiles.every((next) => {
+        return next?.color === color && next.sessionId === sessionId;
+      });
+
+      if (!isNextSame) continue;
+
+      return sessionId;
+    }
+  }
+
+  return undefined;
 }
 
 /// NEW FUNC CALLED PICK WINNER

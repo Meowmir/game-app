@@ -72,12 +72,14 @@ export function pickWinner(gameBoard: (Tile | null)[][]): string | undefined {
 
       const { color, sessionId } = currentTile;
       const nextTiles = gameBoard
+        // Next rows
         .slice(rowI + 1, rowI + howManyInARow)
+        //
         .map((row) => {
           return row[colI];
         });
 
-      // Checking if all tiles in the new array has the same color ans sessionId.
+      // Checking if all tiles in the new array has the same color and sessionId.
       const isNextSame = nextTiles.every((next) => {
         return next?.color === color && next.sessionId === sessionId;
       });
@@ -87,10 +89,31 @@ export function pickWinner(gameBoard: (Tile | null)[][]): string | undefined {
       return sessionId;
     }
   }
+  // Check for diagonal winner.
+  for (let rowI = 0; rowI <= gameBoard.length - howManyInARow; rowI++) {
+    const currentRow = gameBoard[rowI];
+    for (let colI = 0; colI <= currentRow.length - howManyInARow; colI++) {
+      const currentTile = currentRow[colI];
+
+      if (!currentTile) continue;
+
+      const { color, sessionId } = currentTile;
+      const nextTiles = gameBoard
+        .slice(rowI + 1, rowI + howManyInARow)
+        .map((row, nextRowsI) => {
+          return row[colI + nextRowsI + 1];
+        });
+
+      // Checking if all tiles in the new array has the same color and sessionId.
+      const isNextSame = nextTiles.every((next) => {
+        return next?.color === color && next.sessionId === sessionId;
+      });
+
+      if (!isNextSame) continue;
+
+      return sessionId;
+    }
+  }
+
   return undefined;
 }
-
-/// NEW FUNC CALLED PICK WINNER
-// RECI GAMEBOARD
-// OPTIONAL RETURN WINNING PLAYER OBJ
-//

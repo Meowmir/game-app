@@ -22,7 +22,7 @@ export class GameService {
 
     switch (message.type) {
       case 'NEW_GAME':
-        return this.newGame(new MessageDTO(message));
+        return this.newGame();
       case 'GET_GAME':
         return this.getGame(new GetGameMessageDTO(message).gameId);
       case 'ADD_PLAYER':
@@ -34,11 +34,11 @@ export class GameService {
     }
   }
 
-  private async newGame(message: MessageDTO): Promise<ReadGameDTO> {
+  private async newGame(): Promise<ReadGameDTO> {
     const gameToStart = new CreateGameDTO({
-      state: message.type,
+      state: 'NOT_STARTED',
       gameId: uuidv4(),
-      turn: 0,
+      turn: Math.round(Math.random()),
       gameBoard: JSON.stringify(generateBoard(12, 12)),
       players: [],
     });
@@ -74,7 +74,7 @@ export class GameService {
 
     await this.dbService.updateGame(gameId, {
       players: updatedPlayers,
-      state: updatedPlayers.length == MAX_PLAYERS ? 'STARTED' : theGame.state,
+      state: updatedPlayers.length === MAX_PLAYERS ? 'STARTED' : theGame.state,
     });
 
     return this.getGame(message.gameId);

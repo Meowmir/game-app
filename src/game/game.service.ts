@@ -4,11 +4,14 @@ import { DbService } from './db.service';
 import { CreateGameDTO } from './DTO/create-game.dto';
 import {
   AddPlayerMessageDTO,
-  GetGameMessageDTO, MessageDTO,
-  PlaceTileMessageDTO
-} from "./DTO/messages.dto";
+  GetGameMessageDTO,
+  MessageDTO,
+  PlaceTileMessageDTO,
+} from './DTO/messages.dto';
 import { generateBoard, toReadGame } from './game.utils';
 import { ReadGameDTO } from './DTO/read-game.dto';
+
+const MAX_PLAYERS = 2;
 
 @Injectable()
 export class GameService {
@@ -71,6 +74,7 @@ export class GameService {
 
     await this.dbService.updateGame(gameId, {
       players: updatedPlayers,
+      state: updatedPlayers.length == MAX_PLAYERS ? 'STARTED' : theGame.state,
     });
 
     return this.getGame(message.gameId);
@@ -78,14 +82,17 @@ export class GameService {
 
   private async placeTile(message: PlaceTileMessageDTO): Promise<ReadGameDTO> {
     const theGame = await this.dbService.getGame(message.gameId);
-    const { gameBoard } = theGame;
+    const { state, players, turn, gameBoard } = theGame;
     const { row, column, color, gameId, sessionId } = message;
 
+    if (state !== 'STARTED') {
+      throw new BadRequestException('Not enough players.');
+    }
+
     if (
-      theGame.turn !==
-      theGame.players.findIndex((player) => player.sessionId === sessionId)
+      turn !== players.findIndex((player) => player.sessionId === sessionId)
     ) {
-      throw new BadRequestException('NOT YOUR TURN BITCH!');
+      throw new BadRequestException('Not your turn!');
     }
 
     const theGameBoardToArray = JSON.parse(gameBoard);
@@ -105,7 +112,6 @@ export class GameService {
     theGameBoardToArray.at(row).splice(column, 1, { color, sessionId });
 
     const updatedBoardGame = JSON.stringify(theGameBoardToArray);
-    console.log(updatedBoardGame);
 
     await this.dbService.updateGame(gameId, {
       gameBoard: updatedBoardGame,

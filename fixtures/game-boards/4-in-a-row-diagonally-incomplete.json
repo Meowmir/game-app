@@ -1,0 +1,6 @@
+[
+  [{ "color": "RED", "sessionId": "A" }, { "color": "RED", "sessionId": "B" }, { "color": "RED", "sessionId": "A" }, { "color": "RED", "sessionId": "A" }],
+  [{ "color": "BLUE", "sessionId": "A" }, { "color": "RED", "sessionId": "A" }, { "color": "BLUE", "sessionId": "A" }, { "color": "BLUE", "sessionId": "A" }],
+  [{ "color": "RED", "sessionId": "A" }, { "color": "BLUE", "sessionId": "A" }, { "color": "RED", "sessionId": "B" }, { "color": "BLUE", "sessionId": "B" }],
+  [{ "color": "RED", "sessionId": "B" }, { "color": "GREEN", "sessionId": "A" }, { "color": "GREEN", "sessionId": "B" }, { "color": "RED", "sessionId": "B" }]
+]

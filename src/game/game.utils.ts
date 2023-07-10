@@ -1,7 +1,8 @@
 import { Game } from './schemas/game.schema';
 import { ReadGameDTO, ReadPlayerDTO, ReadTileDTO } from './DTO/read-game.dto';
+import { Player } from './schemas/player-schema';
 
-type Tile = { color: string; player: string };
+export type Tile = { color: string; sessionId: string };
 
 export function generateBoard(rows: number, cols: number): (Tile | null)[][] {
   return Array(rows)
@@ -38,8 +39,107 @@ export function toReadGame(theGame: Game): ReadGameDTO {
   });
 }
 
-/// NEW FUNC CALLED PICK WINNER
-// RECI GAME
-// OPTIONAL RETURN WINNING PLAYER OBJ
-//
-// NEW BRANCH, MAKE TESTS
+export function pickWinner(gameBoard: (Tile | null)[][]): string | undefined {
+  //  now find any row containing 4 tiles in a row of the same color and sessionId
+  const howManyInARow = 4;
+
+  // Check for horizontal winner.
+  for (const row of gameBoard) {
+    for (let colI = 0; colI <= row.length - howManyInARow; colI++) {
+      const currentTile = row[colI];
+
+      if (!currentTile) continue;
+
+      const { color, sessionId } = currentTile;
+      const nextTiles = row.slice(colI + 1, colI + howManyInARow);
+      const isNextSame = nextTiles.every((next) => {
+        return next?.color === color && next.sessionId === sessionId;
+      });
+
+      if (!isNextSame) continue;
+
+      return sessionId;
+    }
+  }
+
+  // Check for vertical winner.
+  for (let rowI = 0; rowI <= gameBoard.length - howManyInARow; rowI++) {
+    const currentRow = gameBoard[rowI];
+    for (let colI = 0; colI < currentRow.length; colI++) {
+      const currentTile = currentRow[colI];
+
+      if (!currentTile) continue;
+
+      const { color, sessionId } = currentTile;
+      const nextTiles = gameBoard
+        // Next rows
+        .slice(rowI + 1, rowI + howManyInARow)
+        //
+        .map((row) => {
+          return row[colI];
+        });
+
+      // Checking if all tiles in the new array has the same color and sessionId.
+      const isNextSame = nextTiles.every((next) => {
+        return next?.color === color && next.sessionId === sessionId;
+      });
+
+      if (!isNextSame) continue;
+
+      return sessionId;
+    }
+  }
+  // Check for diagonal right down winner.
+  for (let rowI = 0; rowI <= gameBoard.length - howManyInARow; rowI++) {
+    const currentRow = gameBoard[rowI];
+    for (let colI = 0; colI <= currentRow.length - howManyInARow; colI++) {
+      const currentTile = currentRow[colI];
+
+      if (!currentTile) continue;
+
+      const { color, sessionId } = currentTile;
+      const nextTiles = gameBoard
+        .slice(rowI + 1, rowI + howManyInARow)
+        .map((row, nextRowsI) => {
+          return row[colI + nextRowsI + 1];
+        });
+
+      // Checking if all tiles in the new array has the same color and sessionId.
+      const isNextSame = nextTiles.every((next) => {
+        return next?.color === color && next.sessionId === sessionId;
+      });
+
+      if (!isNextSame) continue;
+
+      return sessionId;
+    }
+  }
+
+  // Check for diagonal left down winner.
+  for (let rowI = 0; rowI <= gameBoard.length - howManyInARow; rowI++) {
+    const currentRow = gameBoard[rowI];
+    for (let colI = howManyInARow - 1; colI < currentRow.length; colI++) {
+      const currentTile = currentRow[colI];
+
+      if (!currentTile) continue;
+
+      const { color, sessionId } = currentTile;
+      const nextTiles = gameBoard
+        .slice(rowI + 1, rowI + howManyInARow)
+        .map((row, nextRowsI) => {
+          return row[colI - nextRowsI - 1];
+        });
+
+      // Checking if all tiles in the new array has the same color and sessionId.
+      const isNextSame = nextTiles.every((next) => {
+        return next?.color === color && next.sessionId === sessionId;
+      });
+
+      if (!isNextSame) continue;
+
+      return sessionId;
+    }
+  }
+
+  return undefined;
+}

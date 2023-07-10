@@ -109,6 +109,8 @@ export class GameService {
       );
     }
 
+    // CHECK IF COLOR HAS ALREADY BEEN PLACED BY THAT PLAYER
+
     theGameBoardToArray.at(row).splice(column, 1, { color, sessionId });
 
     const updatedBoardGame = JSON.stringify(theGameBoardToArray);

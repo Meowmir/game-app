@@ -10,6 +10,6 @@ export class CreatePlayerDTO extends DTOBase<CreatePlayerDTO> {
   @IsNotEmpty()
   sessionId: string;
 
-  @IsArray()
-  tileColors: string[];
+  @IsString({ each: true })
+  placableTiles: string[];
 }

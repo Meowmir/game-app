@@ -11,7 +11,7 @@
 
             const theGameID = "6e294e02-c6e6-44eb-abf2-ec939e118814"
             const thePlayerID = "1"
-            let theTileColors = [{ "RED": 0 }, { "GREEN": 0 }, { "BLUE": 0 }, { "YELLOW": 0 }]
+            let thePlacableTiles = ["RED", "GREEN", "BLUE", "YELLOW"]
 
           //   socket.emit('game', {type: "NEW_GAME"});
 
@@ -21,7 +21,7 @@
             socket.emit('game', {
                 type: "ADD_PLAYER",
                 gameId: theGameID,
-                player: {name: "Hugzie", sessionId: "2", tileColors: theTileColors}
+                player: {name: "Hugzie", sessionId: "2", placableTiles: thePlacableTiles}
             });
 
 

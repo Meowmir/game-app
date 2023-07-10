@@ -8,21 +8,24 @@
         socket.on('connect', function () {
             console.log('Connected');
 
-            const theGameID = "cd15065a-5b21-4547-984d-85f14cb58cfc"
-            const theSessionID = "2"
+
+            const theGameID = "6e294e02-c6e6-44eb-abf2-ec939e118814"
+            const thePlayerID = "1"
+            let theTileColors = [{ "RED": 0 }, { "GREEN": 0 }, { "BLUE": 0 }, { "YELLOW": 0 }]
 
           //   socket.emit('game', {type: "NEW_GAME"});
 
            //  socket.emit('game', {type: "GET_GAME", gameId: theGameID});
 
-/*
-                socket.emit('game', {
-                    type: "ADD_PLAYER",
-                    gameId: theGameID,
-                    player: {name: "Hugzie", sessionId: "2"}
-                });
 
-*/
+            socket.emit('game', {
+                type: "ADD_PLAYER",
+                gameId: theGameID,
+                player: {name: "Hugzie", sessionId: "2", tileColors: theTileColors}
+            });
+
+
+/*
             socket.emit('game', {
                 type: "PLACE_TILE",
                 gameId: theGameID,
@@ -31,6 +34,8 @@
                 row: 1,
                 column: 0
             })
+
+ */
 
 
 

@@ -1,6 +1,7 @@
 import {
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   IsUUID,
   ValidateNested,
@@ -23,6 +24,10 @@ export class ReadGameDTO extends DTOBase<ReadGameDTO> {
 
   @ValidateNested()
   players: ReadPlayerDTO[];
+
+  @IsString()
+  @IsOptional()
+  winner?: string;
 }
 
 export class ReadTileDTO extends DTOBase<ReadTileDTO> {

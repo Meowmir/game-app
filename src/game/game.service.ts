@@ -87,7 +87,7 @@ export class GameService {
     const { state, players, turn, gameBoard } = theGame;
     const { row, column, color, gameId, sessionId } = message;
 
-    if (state !== 'STARTED') {
+    if (players.length < 2) {
       throw new BadRequestException('Not enough players.');
     }
 
@@ -126,6 +126,10 @@ export class GameService {
       gameBoard: updatedBoardGame,
       turn: theGame.turn === 0 ? 1 : 0,
     });
+
+    if (winner) {
+      throw new BadRequestException(`Game over. Winner ${winner}`);
+    }
 
     return this.getGame(message.gameId);
   }

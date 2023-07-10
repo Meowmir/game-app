@@ -8,29 +8,29 @@
         socket.on('connect', function () {
             console.log('Connected');
 
-    const theGameID = "cd15065a-5b21-4547-984d-85f14cb58cfc"
-    const theSessionID = "2"
-
+    const theGameID = "e22b5187-4cff-424c-838f-aab44716b7b6"
+    const thePlayerName = "P2"
+    const thePlayerID = "1"
 
           //   socket.emit('game', {type: "NEW_GAME"});
 
            //  socket.emit('game', {type: "GET_GAME", gameId: theGameID});
 
 /*
-                socket.emit('game', {
-                    type: "ADD_PLAYER",
-                    gameId: theGameID,
-                    player: {name: "Hugzie", sessionId: "2"}
-                });
+            socket.emit('game', {
+                type: "ADD_PLAYER",
+                gameId: theGameID,
+                player: { name: thePlayerName, sessionId: thePlayerID }
+            });
 
-*/
+ */
 
             socket.emit('game', {
                 type: "PLACE_TILE",
                 gameId: theGameID,
-                sessionId: theSessionID,
+                sessionId: thePlayerID,
                 color: "RED",
-                row: 1,
+                row: 3,
                 column: 0
             })
 

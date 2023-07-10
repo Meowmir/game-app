@@ -10,6 +10,7 @@ import {
 } from './DTO/messages.dto';
 import { generateBoard, toReadGame } from './game.utils';
 import { ReadGameDTO } from './DTO/read-game.dto';
+import { name } from 'supertest';
 
 const MAX_PLAYERS = 2;
 
@@ -83,6 +84,7 @@ export class GameService {
   private async placeTile(message: PlaceTileMessageDTO): Promise<ReadGameDTO> {
     const theGame = await this.dbService.getGame(message.gameId);
     const { state, players, turn, gameBoard } = theGame;
+    const { placeableTiles } = players[turn];
     const { row, column, color, gameId, sessionId } = message;
 
     if (state !== 'STARTED') {
@@ -109,8 +111,23 @@ export class GameService {
       );
     }
 
-    // CHECK IF COLOR HAS ALREADY BEEN PLACED BY THAT PLAYER
+    // check if color exists in placeable array
+    // throw error if not
+    if (!placeableTiles.includes(color)) {
+      throw new BadRequestException(
+        'Color already placed. Pick another color.',
+      );
+    }
 
+    const updatedPlaceableTiles =
+      placeableTiles.length > 1
+        ? placeableTiles.filter((t) => t !== color)
+        : ['RED', 'GREEN', 'BLUE', 'YELLOW'];
+    const updatedPlayers = players.map((p, i) =>
+      i === turn ? { ...p, placeableTiles: updatedPlaceableTiles } : p,
+    );
+
+    // place tile
     theGameBoardToArray.at(row).splice(column, 1, { color, sessionId });
 
     const updatedBoardGame = JSON.stringify(theGameBoardToArray);
@@ -118,6 +135,7 @@ export class GameService {
     await this.dbService.updateGame(gameId, {
       gameBoard: updatedBoardGame,
       turn: theGame.turn === 0 ? 1 : 0,
+      players: updatedPlayers,
     });
 
     return this.getGame(message.gameId);

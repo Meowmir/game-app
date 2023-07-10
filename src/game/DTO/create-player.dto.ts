@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { DTOBase } from './base.dto';
 
 export class CreatePlayerDTO extends DTOBase<CreatePlayerDTO> {
@@ -11,5 +11,5 @@ export class CreatePlayerDTO extends DTOBase<CreatePlayerDTO> {
   sessionId: string;
 
   @IsString({ each: true })
-  placableTiles: string[];
+  placeableTiles: string[];
 }

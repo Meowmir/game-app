@@ -8,6 +8,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { CreatePlayerDTO } from './create-player.dto';
+import { Player } from '../schemas/player-schema';
 
 export class UpdateGameDTO extends DTOBase<UpdateGameDTO> {
   @IsString()
@@ -26,4 +27,8 @@ export class UpdateGameDTO extends DTOBase<UpdateGameDTO> {
   @ValidateNested()
   @IsOptional()
   players?: CreatePlayerDTO[];
+
+  @IsString()
+  @IsOptional()
+  winner?: Player;
 }

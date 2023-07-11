@@ -9,8 +9,8 @@
             console.log('Connected');
 
 
-            const theGameID = "90e98934-6ac1-40c7-95d4-cf1f9001bec6"
-            const thePlayerName = "Hugzie"
+            const theGameID = "35458829-a096-4b64-a5f8-19d54713f9d5"
+            const thePlayerName = "P2"
             const thePlayerID = "2"
             let thePlaceableTiles = ["RED", "GREEN", "BLUE", "YELLOW"]
 
@@ -31,21 +31,25 @@
 
  */
 
+
+
 /*
             socket.emit('game', {
                 type: "PLACE_TILE",
                 gameId: theGameID,
-                sessionId: theSessionID,
-                color: "RED",
+                sessionId: thePlayerID,
+                color: "YELLOW",
                 row: 1,
                 column: 0
             })
+ */
+/*
+            socket.emit('game', {
+                type: "RESET_GAME",
+                gameId: theGameID
+            })
 
  */
-
-
-
-
 
 
         });

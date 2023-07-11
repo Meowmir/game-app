@@ -5,12 +5,10 @@ import { CreateGameDTO } from './DTO/create-game.dto';
 import {
   AddPlayerMessageDTO,
   GetGameMessageDTO,
-  MessageDTO,
   PlaceTileMessageDTO,
 } from './DTO/messages.dto';
 import { generateBoard, toReadGame } from './game.utils';
 import { ReadGameDTO } from './DTO/read-game.dto';
-import { name } from 'supertest';
 
 const MAX_PLAYERS = 2;
 
@@ -30,6 +28,8 @@ export class GameService {
         return this.addPlayer(new AddPlayerMessageDTO(message));
       case 'PLACE_TILE':
         return this.placeTile(new PlaceTileMessageDTO(message));
+      case 'RESET_GAME':
+        return this.resetGame(message);
       default:
         throw new BadRequestException('Invalid message type');
     }
@@ -119,10 +119,16 @@ export class GameService {
       );
     }
 
+    // remove color from placeableTiles
+    if (placeableTiles.includes(color)) {
+      placeableTiles.splice(placeableTiles.indexOf(color), 1);
+    }
+
     const updatedPlaceableTiles =
-      placeableTiles.length > 1
+      placeableTiles.length > 0
         ? placeableTiles.filter((t) => t !== color)
         : ['RED', 'GREEN', 'BLUE', 'YELLOW'];
+
     const updatedPlayers = players.map((p, i) =>
       i === turn ? { ...p, placeableTiles: updatedPlaceableTiles } : p,
     );
@@ -138,6 +144,13 @@ export class GameService {
       players: updatedPlayers,
     });
 
+    return this.getGame(message.gameId);
+  }
+
+  private async resetGame(message: any) {
+    await this.dbService.updateGame(message.gameId, {
+      gameBoard: JSON.stringify(generateBoard(12, 12)),
+    });
     return this.getGame(message.gameId);
   }
 }

@@ -148,9 +148,13 @@ export class GameService {
   }
 
   private async resetGame(message: any) {
-    await this.dbService.updateGame(message.gameId, {
-      gameBoard: JSON.stringify(generateBoard(12, 12)),
-    });
+    if (message.gameId.state === 'GAME_OVER') {
+      await this.dbService.updateGame(message.gameId, {
+        gameBoard: JSON.stringify(generateBoard(12, 12)),
+      });
+    } else {
+      throw new BadRequestException('Game is not over yet.');
+    }
     return this.getGame(message.gameId);
   }
 }

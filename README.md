@@ -1,6 +1,15 @@
-## Description
+# 4 for 4
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Hi and thank you for checking out my project!
+
+"4 for 4" is a two player online browser four-in-a-row game written in
+TypeScript. I started the project during my internship at Devilie AB.
+The project was meant to teach me how to set up a server and write both
+front-end and back-end code.
+
+This is the first time I am using TypeScript and coding for the web. My
+mentor decided on the language since it is widely known and common in many
+fields of programming.
 
 ## Installation
 
@@ -9,6 +18,7 @@ $ npm install
 ```
 
 ## Running the app
+
 Start an app listening on [http://localhost:3000/]
 ```bash
 # development
@@ -34,16 +44,24 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
+## How to start the game
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- Create a game.
+- Enter nickname for Player 1.
+- Send invite link to Player 2.
+- Enter nickname for Player 2.
+- Game will start with randomized start-player.
 
-## Stay in touch
+## How to play
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Place any color on tile
+- Next turn that color will be unavailable until all colors have been placed once.
+- When all colors have been placed once, all colors will be available again and you are free to place any color.
+
+## How to win
+
+- Be the first player to get four tiles in a horizontal, vertical or diagonal row.
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+"4 for 4" is [MIT licensed](LICENSE).

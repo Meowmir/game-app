@@ -8,31 +8,35 @@
         socket.on('connect', function () {
             console.log('Connected');
 
-    const theGameID = "cd15065a-5b21-4547-984d-85f14cb58cfc"
-    const theSessionID = "2"
+    const theGameID = "bb49887f-26e2-428f-ba72-e3598b7d5557"
+    const theSessionID = "1"
 
 
-          //   socket.emit('game', {type: "NEW_GAME"});
+          //  socket.emit('game', {type: "NEW_GAME"});
 
-           //  socket.emit('game', {type: "GET_GAME", gameId: theGameID});
+             socket.emit('game', {type: "GET_GAME", gameId: theGameID});
 
 /*
                 socket.emit('game', {
                     type: "ADD_PLAYER",
                     gameId: theGameID,
-                    player: {name: "Hugzie", sessionId: "2"}
+                    player: {name: "Player2", sessionId: "2"}
                 });
 
-*/
+ */
 
+
+/*
             socket.emit('game', {
                 type: "PLACE_TILE",
                 gameId: theGameID,
                 sessionId: theSessionID,
                 color: "RED",
-                row: 1,
+                row: 0,
                 column: 0
             })
+
+ */
 
 
         });

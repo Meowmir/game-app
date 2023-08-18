@@ -2,20 +2,34 @@
 
 Hi and thank you for checking out my project!
 
-"4 for 4" is a two player online browser four-in-a-row game written in
-TypeScript. I started the project during my internship at Devilie AB.
-The project was meant to teach me how to set up a server and write both
-front-end and back-end code.
+"4 for 4" is a two player online browser four-in-a-row game written in TypeScript. I started the project during my internship at Devilie AB. The project was meant to teach me how to set up a server and write both front-end and back-end code.
 
-This is the first time I am using TypeScript and coding for the web. My
-mentor decided on the language since it is widely known and common in many
-fields of programming.
+This is the first time I am using TypeScript and coding for the web. My mentor decided on the language since it is widely known and common in many fields of programming.
 
 ## Installation
 
 ```bash
 $ npm install
 ```
+
+## Tests
+
+## Necessities
+
+To run this project you need a MongoDB account and set up a database.
+
+When you have that, create a file in the main directory (same as socket-tests.html) called 
+```bash
+secrets.properties
+```
+. In the secrets file, add four variables called
+```bash
+dbUri=
+dbName=
+dbUser=
+dbPass=
+```
+. Enter your data and you should be all set.
 
 ## Running the app
 

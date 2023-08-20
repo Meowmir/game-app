@@ -6,7 +6,7 @@ import {
   WsResponse,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-import { UseGuards } from '@nestjs/common';
+import { OnModuleInit, UseGuards } from '@nestjs/common';
 
 import { GameService } from './game.service';
 import { MessageDTO } from './DTO/messages.dto';
@@ -19,11 +19,17 @@ import { AppGuard } from '../app.guard';
     origin: '*',
   },
 })
-export class GameGateway {
+export class GameGateway implements OnModuleInit {
   constructor(private gameService: GameService) {}
 
   @WebSocketServer()
   server: Server;
+
+  onModuleInit(): any {
+    this.gameService.addWatcher((game) => {
+      this.server.emit(`game/${game.gameId}`, game);
+    });
+  }
 
   @SubscribeMessage('game')
   //CHANGE DATA: ANY TO DATA: SCHEMA OR OTHER TYPE DESCRIPTION

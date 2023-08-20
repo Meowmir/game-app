@@ -9,11 +9,12 @@
                 "X-API-TOKEN": localStorage.getItem("myToken")
             }
         });
+
+        const theGameID = "35458829-a096-4b64-a5f8-19d54713f9d5"
+        const theSessionID = "2"
+
         socket.on('connect', function () {
             console.log('Connected');
-
-    const theGameID = "cd15065a-5b21-4547-984d-85f14cb58cfc"
-    const theSessionID = "2"
 
 
           //   socket.emit('game', {type: "NEW_GAME"});
@@ -28,7 +29,7 @@
                 });
 
 */
-
+/*
             socket.emit('game', {
                 type: "PLACE_TILE",
                 gameId: theGameID,
@@ -38,9 +39,11 @@
                 column: 0
             })
 
+ */
+
 
         });
-        socket.on('game', function (data) {
+        socket.on(`game/${theGameID}`, function (data) {
             console.log('game', data);
         });
         socket.on('exception', function (data) {

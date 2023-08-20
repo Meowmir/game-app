@@ -4,11 +4,14 @@
             integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs"
             crossorigin="anonymous"></script>
     <script>
+        const socket = io('http://localhost:3000', {
+            extraHeaders: {
+                "X-API-TOKEN": localStorage.getItem("myToken")
+            }
+        });
 
         const theGameID = "35458829-a096-4b64-a5f8-19d54713f9d5"
         const theSessionID = "2"
-
-        const socket = io('http://localhost:3000');
 
         socket.on('connect', function () {
             console.log('Connected');

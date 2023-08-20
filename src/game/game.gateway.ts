@@ -6,11 +6,14 @@ import {
   WsResponse,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
+import { OnModuleInit, UseGuards } from '@nestjs/common';
+
 import { GameService } from './game.service';
 import { MessageDTO } from './DTO/messages.dto';
 import { ReadGameDTO } from './DTO/read-game.dto';
-import { OnModuleInit } from '@nestjs/common';
+import { AppGuard } from '../app.guard';
 
+@UseGuards(AppGuard)
 @WebSocketGateway({
   cors: {
     origin: '*',

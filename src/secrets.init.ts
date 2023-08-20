@@ -6,6 +6,7 @@ interface Secrets {
   dbName: string;
   dbUser: string;
   dbPass: string;
+  apiTokenSecret: string;
 }
 
 /**
@@ -26,4 +27,4 @@ function loadSecrets(): Secrets {
     .reduce((agg, [key, val]) => ({ ...agg, [key]: val }), {}) as Secrets;
 }
 
-export const { dbUri, dbName, dbPass, dbUser } = loadSecrets();
+export const { dbUri, dbName, dbPass, dbUser, apiTokenSecret } = loadSecrets();

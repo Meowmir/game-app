@@ -1,14 +1,32 @@
 import { Model } from 'mongoose';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Game } from './schemas/game.schema';
 import { CreateGameDTO } from './DTO/create-game.dto';
 import { UpdateGameDTO } from './DTO/update-game-d-t.o';
 
+type DBWatcher = (game: Game) => void;
+
 @Injectable()
-export class DbService {
+export class DbService implements OnModuleInit {
+  private dbWatchers: DBWatcher[] = [];
+
   constructor(@InjectModel(Game.name) private gameModel: Model<Game>) {}
+
+  onModuleInit() {
+    this.gameModel.watch().on('change', async ({ documentKey }) => {
+      const updatedGame = await this.gameModel.findById(documentKey._id);
+      if (!updatedGame) {
+        return;
+      }
+      this.dbWatchers.forEach((watcher) => watcher(updatedGame));
+    });
+  }
+
+  addWatcher(watcher: DBWatcher) {
+    this.dbWatchers.push(watcher);
+  }
 
   // CREATE GAME
   async create(createGameDto: CreateGameDTO): Promise<Game> {

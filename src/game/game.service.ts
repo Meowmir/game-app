@@ -9,10 +9,10 @@ import {
 } from './DTO/messages.dto';
 import { generateBoard, pickWinner, toReadGame } from './game.utils';
 import { ReadGameDTO } from './DTO/read-game.dto';
-import { Game } from './schemas/game.schema';
-import { Player } from './schemas/player-schema';
+import { mergeScan } from 'rxjs';
 
 const MAX_PLAYERS = 2;
+type GameWatcher = (game: ReadGameDTO) => void;
 
 @Injectable()
 export class GameService {
@@ -165,5 +165,11 @@ export class GameService {
       throw new BadRequestException('Game is not over yet.');
     }
     return this.getGame(message.gameId);
+
+    public addWatcher(watcher: GameWatcher) {
+    this.dbService.addWatcher(async (game) => {
+      const theGame = await this.getGame(game.gameId);
+      watcher(theGame);
+    });
   }
 }

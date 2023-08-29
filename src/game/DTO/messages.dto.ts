@@ -14,6 +14,15 @@ export class MessageDTO extends DTOBase<MessageDTO> {
   type: string;
 }
 
+export class NewGameMessageDTO extends DTOBase<MessageDTO> {
+  @IsString()
+  @IsNotEmpty()
+  type: string;
+
+  @ValidateNested()
+  player: CreatePlayerDTO;
+}
+
 export class AddPlayerMessageDTO extends DTOBase<AddPlayerMessageDTO> {
   @IsString()
   @IsNotEmpty()
@@ -47,7 +56,6 @@ export class PlaceTileMessageDTO extends DTOBase<PlaceTileMessageDTO> {
   @IsNotEmpty()
   sessionId: string;
 
-  // Colors available: RED, BLUE, GREEN, YELLOW
   @IsString()
   @IsNotEmpty()
   color: string;

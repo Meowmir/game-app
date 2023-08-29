@@ -9,7 +9,6 @@ import {
 } from './DTO/messages.dto';
 import { generateBoard, pickWinner, toReadGame } from './game.utils';
 import { ReadGameDTO } from './DTO/read-game.dto';
-import { mergeScan } from 'rxjs';
 
 const MAX_PLAYERS = 2;
 type GameWatcher = (game: ReadGameDTO) => void;

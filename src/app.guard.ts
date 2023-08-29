@@ -1,12 +1,16 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 
-import { API_TOKEN_HEADER } from './global.constants';
+import { API_TOKEN_HEADER, IS_PROD } from './global.constants';
 import { apiTokenSecret } from './secrets.init';
 
 @Injectable()
 export class AppGuard implements CanActivate {
   canActivate(context: ExecutionContext) {
+    if (!IS_PROD) {
+      return true;
+    }
+
     const request = context.switchToHttp().getRequest();
     const { headers } = request.handshake || request;
 

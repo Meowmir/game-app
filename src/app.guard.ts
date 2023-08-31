@@ -7,14 +7,19 @@ import { apiTokenSecret } from './secrets.init';
 @Injectable()
 export class AppGuard implements CanActivate {
   canActivate(context: ExecutionContext) {
-    if (!IS_PROD) {
-      return true;
-    }
-
     const request = context.switchToHttp().getRequest();
-    const { headers } = request.handshake || request;
+    const { auth, headers } = request.handshake || request;
 
-    return this.verifyApiToken(headers.host, headers[API_TOKEN_HEADER]);
+    return (
+      IS_PROD &&
+      this.verifyApiToken(
+        headers.host,
+        auth[API_TOKEN_HEADER] ||
+          auth[API_TOKEN_HEADER.toUpperCase()] ||
+          headers[API_TOKEN_HEADER] ||
+          headers[API_TOKEN_HEADER.toUpperCase()],
+      )
+    );
   }
 
   private verifyApiToken(incomingHost: string, token?: string) {

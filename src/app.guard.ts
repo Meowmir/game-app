@@ -13,7 +13,7 @@ export class AppGuard implements CanActivate {
     return (
       IS_PROD &&
       this.verifyApiToken(
-        headers.host,
+        headers.origin,
         auth[API_TOKEN_HEADER] ||
           auth[API_TOKEN_HEADER.toUpperCase()] ||
           headers[API_TOKEN_HEADER] ||
@@ -22,11 +22,11 @@ export class AppGuard implements CanActivate {
     );
   }
 
-  private verifyApiToken(incomingHost: string, token?: string) {
+  private verifyApiToken(incomingOrigin: string, token?: string) {
     try {
       const payload: any = jwt.verify(token || '', apiTokenSecret);
 
-      return incomingHost === payload.host;
+      return new URL(incomingOrigin).host === payload.host;
     } catch (e) {
       return false;
     }

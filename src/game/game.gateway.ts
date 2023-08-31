@@ -33,11 +33,7 @@ export class GameGateway implements OnModuleInit {
 
   @SubscribeMessage('game')
   //CHANGE DATA: ANY TO DATA: SCHEMA OR OTHER TYPE DESCRIPTION
-  async onMessage(
-    @MessageBody() message: any,
-  ): Promise<WsResponse<ReadGameDTO>> {
-    return this.gameService
-      .onEvent(new MessageDTO(message))
-      .then((response) => ({ event: 'game', data: response }));
+  async onMessage(@MessageBody() message: any): Promise<ReadGameDTO> {
+    return this.gameService.onEvent(new MessageDTO(message));
   }
 }

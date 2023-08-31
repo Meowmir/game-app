@@ -5,11 +5,11 @@ import { CreateGameDTO } from './DTO/create-game.dto';
 import {
   AddPlayerMessageDTO,
   GetGameMessageDTO,
+  NewGameMessageDTO,
   PlaceTileMessageDTO,
 } from './DTO/messages.dto';
 import { generateBoard, pickWinner, toReadGame } from './game.utils';
 import { ReadGameDTO } from './DTO/read-game.dto';
-import { mergeScan } from 'rxjs';
 
 const MAX_PLAYERS = 2;
 type GameWatcher = (game: ReadGameDTO) => void;
@@ -23,7 +23,7 @@ export class GameService {
 
     switch (message.type) {
       case 'NEW_GAME':
-        return this.newGame();
+        return this.newGame(new NewGameMessageDTO(message));
       case 'GET_GAME':
         return this.getGame(new GetGameMessageDTO(message).gameId);
       case 'ADD_PLAYER':
@@ -35,13 +35,15 @@ export class GameService {
     }
   }
 
-  private async newGame(): Promise<ReadGameDTO> {
+  private async newGame(message: NewGameMessageDTO): Promise<ReadGameDTO> {
+    const { player } = message;
+
     const gameToStart = new CreateGameDTO({
       state: 'NOT_STARTED',
       gameId: uuidv4(),
       turn: Math.round(Math.random()),
       gameBoard: JSON.stringify(generateBoard(12, 12)),
-      players: [],
+      players: [player],
     });
     await this.dbService.create(gameToStart);
 

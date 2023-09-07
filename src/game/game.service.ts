@@ -25,7 +25,7 @@ export class GameService {
       case 'NEW_GAME':
         return this.newGame(new NewGameMessageDTO(message));
       case 'GET_GAME':
-        return this.getGame(new GetGameMessageDTO(message).gameId);
+        return this.getGame(new GetGameMessageDTO(message));
       case 'ADD_PLAYER':
         return this.addPlayer(new AddPlayerMessageDTO(message));
       case 'PLACE_TILE':
@@ -47,11 +47,17 @@ export class GameService {
     });
     await this.dbService.create(gameToStart);
 
-    return this.getGame(gameToStart.gameId);
+    return this.getGame(gameToStart);
   }
 
-  private async getGame(gameId: string): Promise<ReadGameDTO> {
-    return this.dbService.getGame(gameId).then(toReadGame);
+  private async getGame({
+    gameId,
+    sessionId,
+  }: {
+    gameId: string;
+    sessionId?: string;
+  }): Promise<ReadGameDTO> {
+    return this.dbService.getGame(gameId).then((g) => toReadGame(g, sessionId));
   }
 
   private async addPlayer(message: AddPlayerMessageDTO): Promise<ReadGameDTO> {
@@ -80,7 +86,7 @@ export class GameService {
       state: updatedPlayers.length === MAX_PLAYERS ? 'STARTED' : theGame.state,
     });
 
-    return this.getGame(message.gameId);
+    return this.getGame(message);
   }
 
   private async placeTile(message: PlaceTileMessageDTO): Promise<ReadGameDTO> {
@@ -128,12 +134,12 @@ export class GameService {
       turn: theGame.turn === 0 ? 1 : 0,
     });
 
-    return this.getGame(message.gameId);
+    return this.getGame(message);
   }
 
   public addWatcher(watcher: GameWatcher) {
     this.dbService.addWatcher(async (game) => {
-      const theGame = await this.getGame(game.gameId);
+      const theGame = await this.getGame(game);
       watcher(theGame);
     });
   }

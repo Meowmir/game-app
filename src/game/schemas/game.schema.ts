@@ -20,6 +20,9 @@ export class Game {
 
   @Prop({ required: true })
   players: Player[];
+
+  @Prop({ required: false })
+  isP1?: boolean;
 }
 
 export const GameSchema = SchemaFactory.createForClass(Game);

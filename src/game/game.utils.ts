@@ -10,7 +10,7 @@ export function generateBoard(rows: number, cols: number): (Tile | null)[][] {
     .map((_) => Array(cols).fill(null));
 }
 
-export function toReadGame(theGame: Game): ReadGameDTO {
+export function toReadGame(theGame: Game, sessionId?: string): ReadGameDTO {
   const playersById = new Map(
     theGame.players.map((p) => [p.sessionId, p.name]),
   );
@@ -36,6 +36,10 @@ export function toReadGame(theGame: Game): ReadGameDTO {
         });
       }),
     ),
+    isP1:
+      sessionId && theGame.players[0]?.sessionId === sessionId
+        ? true
+        : undefined,
   });
 }
 

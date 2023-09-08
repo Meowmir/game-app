@@ -35,13 +35,17 @@ export class AddPlayerMessageDTO extends DTOBase<AddPlayerMessageDTO> {
   player: CreatePlayerDTO;
 }
 
-export class GetGameMessageDTO extends DTOBase<AddPlayerMessageDTO> {
+export class GetGameMessageDTO extends DTOBase<GetGameMessageDTO> {
   @IsString()
   @IsNotEmpty()
   type: string;
 
   @IsUUID()
   gameId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  sessionId: string;
 }
 
 export class PlaceTileMessageDTO extends DTOBase<PlaceTileMessageDTO> {

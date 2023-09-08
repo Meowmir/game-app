@@ -10,16 +10,15 @@ export class AppGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const { auth, headers } = request.handshake || request;
 
-    return (
-      IS_PROD &&
-      this.verifyApiToken(
-        headers.origin,
-        auth[API_TOKEN_HEADER] ||
-          auth[API_TOKEN_HEADER.toUpperCase()] ||
-          headers[API_TOKEN_HEADER] ||
-          headers[API_TOKEN_HEADER.toUpperCase()],
-      )
-    );
+    return IS_PROD
+      ? this.verifyApiToken(
+          headers.origin,
+          auth[API_TOKEN_HEADER] ||
+            auth[API_TOKEN_HEADER.toUpperCase()] ||
+            headers[API_TOKEN_HEADER] ||
+            headers[API_TOKEN_HEADER.toUpperCase()],
+        )
+      : true;
   }
 
   private verifyApiToken(incomingOrigin: string, token?: string) {

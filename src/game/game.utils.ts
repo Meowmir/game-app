@@ -33,6 +33,10 @@ export function toReadGame(theGame: Game, sessionId?: string): ReadGameDTO {
         return new ReadTileDTO({
           color: tile.color,
           playerName: playersById.get(tile.sessionId) || 'Unknown',
+          isP1:
+            theGame.players.findIndex(
+              (player) => player.sessionId === tile.sessionId,
+            ) === 0,
         });
       }),
     ),

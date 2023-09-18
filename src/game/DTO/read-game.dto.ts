@@ -39,6 +39,9 @@ export class ReadTileDTO extends DTOBase<ReadTileDTO> {
   @IsString()
   @IsNotEmpty()
   playerName: string;
+
+  @IsBoolean()
+  isP1: boolean;
 }
 
 export class ReadPlayerDTO extends DTOBase<ReadPlayerDTO> {

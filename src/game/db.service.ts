@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { Game } from './schemas/game.schema';
 import { CreateGameDTO } from './DTO/create-game.dto';
-import { UpdateGameDTO } from './DTO/update-game-d-t.o';
+import { UpdateGameDto } from './DTO/update-game.dto';
 
 type DBWatcher = (game: Game) => void;
 
@@ -43,7 +43,7 @@ export class DbService implements OnModuleInit {
     return foundGame;
   }
 
-  async updateGame(gameId: string, update: UpdateGameDTO): Promise<Game> {
+  async updateGame(gameId: string, update: UpdateGameDto): Promise<Game> {
     await this.gameModel.findOneAndUpdate({ gameId }, update);
     return this.getGame(gameId);
   }

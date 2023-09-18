@@ -10,7 +10,7 @@ import {
 import { CreatePlayerDTO } from './create-player.dto';
 import { Player } from '../schemas/player-schema';
 
-export class UpdateGameDTO extends DTOBase<UpdateGameDTO> {
+export class UpdateGameDto extends DTOBase<UpdateGameDto> {
   @IsString()
   @IsNotEmpty()
   @IsOptional()

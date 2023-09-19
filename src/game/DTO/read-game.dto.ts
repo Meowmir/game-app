@@ -8,6 +8,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { DTOBase } from './base.dto';
+import { ReadWinnerDto } from './read-winner.dto';
 
 export class ReadGameDTO extends DTOBase<ReadGameDTO> {
   @IsString()
@@ -30,9 +31,8 @@ export class ReadGameDTO extends DTOBase<ReadGameDTO> {
   @IsOptional()
   isP1?: boolean;
 
-  @IsString()
   @IsOptional()
-  winner?: string;
+  winner?: ReadWinnerDto[];
 }
 
 export class ReadTileDTO extends DTOBase<ReadTileDTO> {

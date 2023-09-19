@@ -29,6 +29,9 @@ export class ReadGameDTO extends DTOBase<ReadGameDTO> {
   @IsBoolean()
   @IsOptional()
   isP1?: boolean;
+
+  @IsOptional()
+  winner?: string;
 }
 
 export class ReadTileDTO extends DTOBase<ReadTileDTO> {

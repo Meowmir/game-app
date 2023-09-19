@@ -127,9 +127,11 @@ export class GameService {
       (p) => winningId && p.sessionId === winningId,
     );
 
+    const isFull = theGameBoardToArray.every((row: any) => row.every(Boolean));
+
     await this.dbService.updateGame(gameId, {
       winner,
-      state: winner ? 'GAME_OVER' : theGame.state,
+      state: winner || isFull ? 'GAME_OVER' : theGame.state,
       gameBoard: updatedBoardGame,
       turn: theGame.turn === 0 ? 1 : 0,
     });

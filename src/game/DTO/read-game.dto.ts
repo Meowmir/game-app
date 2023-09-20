@@ -57,4 +57,7 @@ export class ReadPlayerDTO extends DTOBase<ReadPlayerDTO> {
   @IsString()
   @IsNotEmpty()
   name: string;
+
+  @IsString({ each: true })
+  placeableTiles: string[];
 }

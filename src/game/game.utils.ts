@@ -1,6 +1,7 @@
 import { Game } from './schemas/game.schema';
 import { ReadGameDTO, ReadPlayerDTO, ReadTileDTO } from './DTO/read-game.dto';
 import { Player } from './schemas/player-schema';
+import { DEFAULT_PLACEABLE_TILES } from '../global.constants';
 
 export type Tile = { color: string; sessionId: string };
 
@@ -25,6 +26,7 @@ export function toReadGame(theGame: Game, sessionId?: string): ReadGameDTO {
       (p) =>
         new ReadPlayerDTO({
           name: p.name,
+          placeableTiles: p.placeableTiles || DEFAULT_PLACEABLE_TILES,
         }),
     ),
     gameBoard: JSON.parse(theGame.gameBoard).map((row: any) =>

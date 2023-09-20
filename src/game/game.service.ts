@@ -10,6 +10,7 @@ import {
 } from './DTO/messages.dto';
 import { generateBoard, pickWinner, toReadGame } from './game.utils';
 import { ReadGameDTO } from './DTO/read-game.dto';
+import { DEFAULT_PLACEABLE_TILES } from '../global.constants';
 
 const MAX_PLAYERS = 2;
 type GameWatcher = (game: ReadGameDTO) => void;
@@ -93,7 +94,8 @@ export class GameService {
     const theGame = await this.dbService.getGame(message.gameId);
     const { state, players, turn, gameBoard } = theGame;
     const { row, column, color, gameId, sessionId } = message;
-    const { placeableTiles = [] } = players[turn];
+    const colorToUpper = color.toUpperCase();
+    const { placeableTiles = DEFAULT_PLACEABLE_TILES } = players[turn];
 
     if (state !== 'STARTED') {
       throw new BadRequestException('Not enough players.');
@@ -121,28 +123,26 @@ export class GameService {
 
     // check if color exists in placeable array
     // throw error if not
-    if (!placeableTiles.includes(color)) {
+    if (!placeableTiles.includes(colorToUpper)) {
       throw new BadRequestException(
         'Color already placed. Pick another color.',
       );
     }
 
     // remove color from placeableTiles
-    if (placeableTiles.includes(color)) {
-      placeableTiles.splice(placeableTiles.indexOf(color), 1);
-    }
-
     const updatedPlaceableTiles =
       placeableTiles.length > 0
-        ? placeableTiles.filter((t) => t !== color)
-        : ['BLUE', 'GREEN', 'ORANGE', 'PINK'];
+        ? placeableTiles.filter((t) => t !== colorToUpper)
+        : DEFAULT_PLACEABLE_TILES;
 
     const updatedPlayers = players.map((p, i) =>
       i === turn ? { ...p, placeableTiles: updatedPlaceableTiles } : p,
     );
 
     // place tile
-    theGameBoardToArray.at(row).splice(column, 1, { color, sessionId });
+    theGameBoardToArray
+      .at(row)
+      .splice(column, 1, { color: colorToUpper, sessionId });
 
     const updatedBoardGame = JSON.stringify(theGameBoardToArray);
 

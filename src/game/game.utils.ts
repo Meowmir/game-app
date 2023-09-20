@@ -14,8 +14,10 @@ export function toReadGame(theGame: Game, sessionId?: string): ReadGameDTO {
   const playersById = new Map(
     theGame.players.map((p) => [p.sessionId, p.name]),
   );
+  const winningId = pickWinner(JSON.parse(theGame.gameBoard));
 
   return new ReadGameDTO({
+    winner: winningId ? (theGame.turn === 0 ? 'P2' : 'P1') : undefined,
     state: theGame.state,
     gameId: theGame.gameId,
     turn: theGame.turn,

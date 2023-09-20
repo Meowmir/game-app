@@ -11,3 +11,5 @@ export const CLIENT_ROOT_DIR = path.join(
   __dirname,
   '../../color-fours-game/build',
 );
+
+export const DEFAULT_PLACEABLE_TILES = ['BLUE', 'GREEN', 'ORANGE', 'PINK'];

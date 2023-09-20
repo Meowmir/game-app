@@ -93,6 +93,7 @@ export class GameService {
     const theGame = await this.dbService.getGame(message.gameId);
     const { state, players, turn, gameBoard } = theGame;
     const { row, column, color, gameId, sessionId } = message;
+    const { placeableTiles = [] } = players[turn];
 
     if (state !== 'STARTED') {
       throw new BadRequestException('Not enough players.');
@@ -118,6 +119,29 @@ export class GameService {
       );
     }
 
+    // check if color exists in placeable array
+    // throw error if not
+    if (!placeableTiles.includes(color)) {
+      throw new BadRequestException(
+        'Color already placed. Pick another color.',
+      );
+    }
+
+    // remove color from placeableTiles
+    if (placeableTiles.includes(color)) {
+      placeableTiles.splice(placeableTiles.indexOf(color), 1);
+    }
+
+    const updatedPlaceableTiles =
+      placeableTiles.length > 0
+        ? placeableTiles.filter((t) => t !== color)
+        : ['BLUE', 'GREEN', 'ORANGE', 'PINK'];
+
+    const updatedPlayers = players.map((p, i) =>
+      i === turn ? { ...p, placeableTiles: updatedPlaceableTiles } : p,
+    );
+
+    // place tile
     theGameBoardToArray.at(row).splice(column, 1, { color, sessionId });
 
     const updatedBoardGame = JSON.stringify(theGameBoardToArray);
@@ -134,6 +158,7 @@ export class GameService {
       state: winner || isFull ? 'GAME_OVER' : theGame.state,
       gameBoard: updatedBoardGame,
       turn: theGame.turn === 0 ? 1 : 0,
+      players: updatedPlayers,
     });
 
     return this.getGame(message);

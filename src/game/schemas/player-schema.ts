@@ -11,6 +11,9 @@ export class Player implements CreatePlayerDTO {
 
   @Prop({ required: true })
   sessionId: string;
+
+  @Prop({ required: true })
+  placeableTiles: string[];
 }
 
 export const PlayerSchema = SchemaFactory.createForClass(Player);

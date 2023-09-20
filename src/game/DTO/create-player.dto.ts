@@ -9,4 +9,7 @@ export class CreatePlayerDTO extends DTOBase<CreatePlayerDTO> {
   @IsString()
   @IsNotEmpty()
   sessionId: string;
+
+  @IsString({ each: true })
+  placeableTiles: string[];
 }

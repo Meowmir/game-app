@@ -9,6 +9,12 @@ import {
 } from 'class-validator';
 import { DTOBase } from './base.dto';
 
+export class GameErrorDTO extends DTOBase<GameErrorDTO> {
+  @IsString()
+  @IsNotEmpty()
+  error: string;
+}
+
 export class ReadGameDTO extends DTOBase<ReadGameDTO> {
   @IsString()
   @IsNotEmpty()

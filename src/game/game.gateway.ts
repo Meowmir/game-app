@@ -10,7 +10,7 @@ import { OnModuleInit, UseGuards } from '@nestjs/common';
 
 import { GameService } from './game.service';
 import { MessageDTO } from './DTO/messages.dto';
-import { ReadGameDTO } from './DTO/read-game.dto';
+import { GameErrorDTO, ReadGameDTO } from './DTO/read-game.dto';
 import { AppGuard } from '../app.guard';
 
 @UseGuards(AppGuard)
@@ -33,7 +33,11 @@ export class GameGateway implements OnModuleInit {
 
   @SubscribeMessage('game')
   //CHANGE DATA: ANY TO DATA: SCHEMA OR OTHER TYPE DESCRIPTION
-  async onMessage(@MessageBody() message: any): Promise<ReadGameDTO> {
-    return this.gameService.onEvent(new MessageDTO(message));
+  async onMessage(
+    @MessageBody() message: any,
+  ): Promise<ReadGameDTO | GameErrorDTO> {
+    return this.gameService
+      .onEvent(new MessageDTO(message))
+      .catch((err) => new GameErrorDTO({ error: err.message }));
   }
 }

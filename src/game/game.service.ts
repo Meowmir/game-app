@@ -130,13 +130,20 @@ export class GameService {
     }
 
     // remove color from placeableTiles
-    const updatedPlaceableTiles =
-      placeableTiles.length > 0
-        ? placeableTiles.filter((t) => t !== colorToUpper)
-        : DEFAULT_PLACEABLE_TILES;
+    const updatedPlaceableTiles = placeableTiles.filter(
+      (t) => t !== colorToUpper,
+    );
 
     const updatedPlayers = players.map((p, i) =>
-      i === turn ? { ...p, placeableTiles: updatedPlaceableTiles } : p,
+      i === turn
+        ? {
+            ...p,
+            placeableTiles:
+              updatedPlaceableTiles.length > 0
+                ? updatedPlaceableTiles
+                : DEFAULT_PLACEABLE_TILES,
+          }
+        : p,
     );
 
     // place tile

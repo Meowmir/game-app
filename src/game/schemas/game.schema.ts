@@ -7,6 +7,9 @@ export type GameDocument = HydratedDocument<Game>;
 @Schema()
 export class Game {
   @Prop({ required: true })
+  createdAt: number;
+
+  @Prop({ required: true })
   state: string;
 
   @Prop({ required: true })
@@ -22,7 +25,7 @@ export class Game {
   players: Player[];
 
   @Prop({ required: false })
-  isP1?: boolean;
+  latestTile?: string;
 }
 
 export const GameSchema = SchemaFactory.createForClass(Game);

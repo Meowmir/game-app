@@ -30,7 +30,10 @@ export class DbService implements OnModuleInit {
 
   // CREATE GAME
   async create(createGameDto: CreateGameDTO): Promise<Game> {
-    const createdGame = new this.gameModel(createGameDto);
+    const createdGame = new this.gameModel({
+      ...createGameDto,
+      createdAt: new Date().getTime(),
+    });
     return createdGame.save();
   }
 

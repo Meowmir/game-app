@@ -1,5 +1,10 @@
 import { Game } from './schemas/game.schema';
-import { ReadGameDTO, ReadPlayerDTO, ReadTileDTO } from './DTO/read-game.dto';
+import {
+  LatestTileDTO,
+  ReadGameDTO,
+  ReadPlayerDTO,
+  ReadTileDTO,
+} from './DTO/read-game.dto';
 import { Player } from './schemas/player-schema';
 import { DEFAULT_PLACEABLE_TILES } from '../global.constants';
 
@@ -48,6 +53,9 @@ export function toReadGame(theGame: Game, sessionId?: string): ReadGameDTO {
       sessionId && theGame.players[0]?.sessionId === sessionId
         ? true
         : undefined,
+    latestTile: theGame.latestTile
+      ? new LatestTileDTO(JSON.parse(theGame.latestTile))
+      : null,
   });
 }
 

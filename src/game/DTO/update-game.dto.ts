@@ -28,7 +28,11 @@ export class UpdateGameDto extends DTOBase<UpdateGameDto> {
   @IsOptional()
   players?: CreatePlayerDTO[];
 
-  @IsString()
+  @ValidateNested()
   @IsOptional()
   winner?: Player;
+
+  @IsString()
+  @IsOptional()
+  latestTile?: string;
 }

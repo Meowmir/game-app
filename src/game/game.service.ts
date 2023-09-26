@@ -9,7 +9,7 @@ import {
   PlaceTileMessageDTO,
 } from './DTO/messages.dto';
 import { generateBoard, pickWinner, toReadGame } from './game.utils';
-import { ReadGameDTO } from './DTO/read-game.dto';
+import { LatestTileDTO, ReadGameDTO } from './DTO/read-game.dto';
 import { DEFAULT_PLACEABLE_TILES } from '../global.constants';
 
 const MAX_PLAYERS = 2;
@@ -166,6 +166,9 @@ export class GameService {
       gameBoard: updatedBoardGame,
       turn: theGame.turn === 0 ? 1 : 0,
       players: updatedPlayers,
+      latestTile: JSON.stringify(
+        new LatestTileDTO({ row, column, isP1: turn === 0 }),
+      ),
     });
 
     return this.getGame(message);

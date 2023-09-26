@@ -38,6 +38,9 @@ export class ReadGameDTO extends DTOBase<ReadGameDTO> {
 
   @IsOptional()
   winner?: string;
+
+  @IsOptional()
+  latestTile?: LatestTileDTO | null;
 }
 
 export class ReadTileDTO extends DTOBase<ReadTileDTO> {
@@ -48,6 +51,19 @@ export class ReadTileDTO extends DTOBase<ReadTileDTO> {
   @IsString()
   @IsNotEmpty()
   playerName: string;
+
+  @IsBoolean()
+  isP1: boolean;
+}
+
+export class LatestTileDTO extends DTOBase<LatestTileDTO> {
+  @IsNumber()
+  @IsNotEmpty()
+  column: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  row: number;
 
   @IsBoolean()
   isP1: boolean;

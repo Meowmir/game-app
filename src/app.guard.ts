@@ -9,7 +9,7 @@ export class AppGuard implements CanActivate {
   canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
     const { auth, headers } = request.handshake || request;
-    
+
     return IS_PROD
       ? this.verifyApiToken(
           headers.referer,
@@ -24,8 +24,8 @@ export class AppGuard implements CanActivate {
   private verifyApiToken(incomingOrigin: string, token?: string) {
     try {
       const payload: any = jwt.verify(token || '', apiTokenSecret);
-    
-      return new URL(incomingOrigin).host === payload.host;
+
+      return new URL(incomingOrigin).host.replace('www.', '') === payload.host;
     } catch (e) {
       return false;
     }

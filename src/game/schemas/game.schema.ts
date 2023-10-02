@@ -4,11 +4,8 @@ import { Player } from './player-schema';
 
 export type GameDocument = HydratedDocument<Game>;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Game {
-  @Prop({ required: true })
-  createdAt: number;
-
   @Prop({ required: true })
   state: string;
 
